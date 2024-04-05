@@ -5,6 +5,9 @@ import torch
 from transformers import pipeline
 from pptx import Presentation
 
+cuda_available = torch.cuda.is_available()
+device = torch.device("cuda" if cuda_available else "cpu")
+
 def extract_text_from_pdf(pdf_path):
     doc = fitz.open(pdf_path)  
     all_text = ""  
@@ -25,9 +28,9 @@ def chunk_text(text, max_tokens=1024):
 def summarize_chunks(chunks):
     summaries = []
     tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
-    model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
+    model = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn").to(device)
     for chunk in chunks:
-        inputs = tokenizer(chunk, return_tensors="pt", max_length=1024, truncation=True)
+        inputs = tokenizer(chunk, return_tensors="pt", max_length=1024, truncation=True).to(device)
         summary_ids = model.generate(inputs.input_ids, max_length=150, early_stopping=True)
         summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
         summaries.append(summary)
@@ -99,21 +102,34 @@ def generate_ppt():
     # Save the presentation
     prs.save("presentation.pptx")
 
-def main():
-    # Step 1: extract text
-    pdf_path = "XCon Learning with Experts for Fine-grained Category Discovery.pdf"
-    pdf_text = extract_text_from_pdf(pdf_path)
-    # print(pdf_text)
+def debug_read_write(file, data=None, mode="read"):
+    if mode == "write":
+        with open(file, 'w') as f:
+            f.write(data)
+            return None
+        f.close()
+    elif mode == "read":
+        with open(file, 'r') as f:
+            res = f.read()
+            return res
+        f.close()
 
-    # Step 2: Summarize 
-    text_chunks = chunk_text(pdf_text)
-    chunk_summaries = summarize_chunks(text_chunks)
-    final_summary = concatenate_summaries(chunk_summaries)
-    tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
-    tokens = tokenizer.tokenize(final_summary)
-    number_of_tokens = len(tokens)
-    print("number_of_tokens: ", number_of_tokens)
-    print(final_summary)
+def main():
+    # # Step 1: extract text
+    # pdf_path = "XCon Learning with Experts for Fine-grained Category Discovery.pdf"
+    # pdf_text = extract_text_from_pdf(pdf_path)
+
+    # # Step 2: Summarize 
+    # text_chunks = chunk_text(pdf_text)
+    # chunk_summaries = summarize_chunks(text_chunks)
+    # final_summary = concatenate_summaries(chunk_summaries)
+    # tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+    # tokens = tokenizer.tokenize(final_summary)
+    # number_of_tokens = len(tokens)
+    # debug_read_write('./summary.txt', final_summary, "write")
+    
+    # You can read from summary.txt to quickly debug, no need to run the model every time
+    final_summary = debug_read_write('./summary.txt')
 
     # Step 3: Transform into ppt content
     get_ppt_content(final_summary)
