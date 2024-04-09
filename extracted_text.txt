@@ -1,0 +1,1058 @@
+Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY 1
+XCon: Learning with Experts for
+Fine-grained Category Discovery
+Yixin Fei1
+yixin.feiyx@gmail.com
+Zhongkai Zhao1
+zhongkai.zhaok@gmail.com
+Siwei Yang1,3
+swyang.ac@gmail.com
+Bingchen Zhao2,3
+zhaobc.gm@gmail.com
+1 Tongji University
+Shanghai, China
+2 University of Edinburgh,
+Edinburgh, UK
+3 LunarAI
+Abstract
+We address the problem of generalized category discovery (GCD) in this paper, i.e.
+clustering the unlabeled images leveraging the information from a set of seen classes,
+where the unlabeled images could contain both seen classes and unseen classes. The seen
+classes can be seen as an implicit criterion of classes, which makes this setting different
+from unsupervised clustering where the cluster criteria may be ambiguous. We mainly
+concern the problem of discovering categories within a ﬁne-grained dataset since it is one
+of the most direct applications of category discovery, i.e. helping experts discover novel
+concepts within an unlabeled dataset using the implicit criterion set forth by the seen
+classes. State-of-the-art methods for generalized category discovery leverage contrastive
+learning to learn the representations, but the large inter-class similarity and intra-class
+variance pose a challenge for the methods because the negative examples may contain
+irrelevant cues for recognizing a category so the algorithms may converge to a local-
+minima. We present a novel method called Expert-Contrastive Learning (XCon) to help
+the model to mine useful information from the images by ﬁrst partitioning the dataset into
+sub-datasets using k-means clustering and then performing contrastive learning on each
+of the sub-datasets to learn ﬁne-grained discriminative features. Experiments on ﬁne-
+grained datasets show a clear improved performance over the previous best methods,
+indicating the effectiveness of our method.
+1
+Introduction
+Deep learning models have achieved super-human performance on many computer vi-
+sion problems where large-scale human annotations are available, such as image recogni-
+tion [5] and object detection [23]. However, collecting a dataset at scales like ImageNet or
+COCO is not always possible. Consider the scenario of ﬁne-grained recognition such as bird
+species recognition or medical image analysis, where the annotations require expert knowl-
+edge which could be costly to collect, also it is difﬁcult for the collected annotations to cover
+all the possible classes because new classes keep growing over time.
+The problem of generalized category discovery was recently formalized in [26], where
+the aim is to discover categories within the unlabeled data by leveraging the information
+© 2022. The copyright of this document resides with its authors.
+It may be distributed unchanged freely in print or electronic forms.
+arXiv:2208.01898v1  [cs.CV]  3 Aug 2022
+2 Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY
+DINO w/o our fine-tuning
+CUB
+DINO w/ our fine-tuning
+Figure 1: k-means results on the DINO features and features after ﬁne-tuning with our
+method. The images in each row represent a cluster in k-means. The clusters formed by
+DINO features are mainly based on the class irrelevant cues, e.g., background and object
+pose. The features learned by our method could cluster the images based on the correct cues,
+the object classes.
+from a set of labeled data. It is assumed that the labeled data contains similar yet distinct
+classes from the unlabeled data. The labeled data collected by human experts can be seen
+as an implicit criterion of classes which can be learned by the model to perform clustering
+on the unlabeled data. This setting is much harder than semi-supervised learning because
+generalized category discovery does not assume we know all the classes in the data while
+in semi-supervised learning the assumption is that the labeled data covers all the classes
+including ones in unlabeled data.
+In this paper, we speciﬁcally focus on ﬁne-grained generalized category discovery which
+is a more difﬁcult and practical problem than generic category discovery since ﬁeld experts
+are interested in the ﬁne-grained concepts in real applications, and they often have a labeled
+dataset representing the existing knowledge, so such a ﬁne-grained generalized category
+discovery method could help them make sense of the unlabeled set by clustering the unla-
+beled instance according to the criteria implicitly deﬁned in the labeled data. In ﬁne-grained
+category discovery, the main challenge is the large inter-class similarity and the intra-class
+variance, different classes may require the model to learn more discriminative features to
+be able to distinguish, e.g., two different birds could only differ in the beak. We have ob-
+served that an unsupervised representation (e.g. DINO) could cluster the data based on class
+irrelevant cues such as the object pose or the background, see the left part of Fig. 1. Based
+on this observation, we proposed a simple yet effective method to boost the performance
+of generalized category discovery on ﬁne-grained data named Expert Contrastive Learning
+(XCon).
+In our proposed XCon method, we partition the data into k expert sub-datasets by directly
+performing k-means clustering on self-supervised representations. These k sub-datasets can
+be used as a strong prior for the next learning phase because within each of the k sub-
+datasets, class-irrelevant cues will be so similar that the model will be forced to learn more
+class-relevant features within each sub-dataset. Each of these sub-datasets can be viewed
+as an expert dataset used to eliminate the negative inﬂuence introduced by certain kinds of
+class-irrelevant cues. To learn a robust representation from these datasets, we directly lever-
+age supervised contrastive learning [16] on the labeled data and unsupervised contrastive
+learning [2] on all the data.
+Our contribution is three-fold:
+• We observed that self-supervised representations can group the data based on class
+Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY 3
+irrelevant cues which can be exploited to design further methods.
+• We proposed a method that can learn discriminative features for ﬁne-grained category
+discovery by partitioning the data into k sub-datasets.
+• We validated the effectiveness of our proposed method by setting a new state-of-the-art
+performance on seven tested generalized category discovery benchmarks.
+Our code is available at https://github.com/YiXXin/XCon.
+2
+Related Works
+2.1
+Novel Category Discovery
+Novel Category Discovery (NCD) aims to discover new object categories by transferring
+the knowledge learned from a set of relevant but different seen classes. This task was ﬁrst
+formalized in DTC [8], with earlier works [13, 14] tackling a similar problem. KCL [13]
+and MCL [14] utilize the pairwise similarity to transfer the clustering model to cross-task
+scenarios, which can be used to categorize the unseen classes further. A common three-
+step learning pipeline is proposed in RankStat [9] where the representation is ﬁrst learned
+with self-supervision on all the data and then ﬁne-tuned on the labeled data, the ﬁnal repre-
+sentation used for discovering novel categories is then further ﬁne-tuned using a pair-wise
+clustering loss on the unlabeled data. Since then, many works [4, 7, 9, 29, 30, 31] begin
+to focus on this NCD problem and present promising results. Contrastive learning has been
+explored under this NCD problem by NCL [30], showing strong performance.
+Efforts have also been made in extending this problem to the more challenging ﬁne-
+grained classiﬁcation scenario by DualRank [29], which leverages the local object parts in-
+formation to enhance the representations used for discovering novel categories. Our work
+also focuses on the challenging ﬁne-grained classiﬁcation scenario. The key difference with
+prior works is that we use k-means grouping on a self-supervised feature to provide infor-
+mative pairs for contrastive learning instead of using MixUp [30] or local object parts [29].
+Our work also builds on a newly proposed setting named Generalized Category Discov-
+ery (GCD) [26] where the unlabeled examples can come from both seen and unseen classes,
+which is a more realistic scenario than NCD.
+2.2
+Contrastive Learning
+Contrastive learning has been showing to be effective for learning representations [2, 11]
+in a self-supervised manner using the instance discrimination pretext [28] as the learning
+objective. Instance discrimination learns the representation by pushing negative examples
+away from each other and pulling positive examples closer in the embedding space. As
+informative examples are important for learning representations with contrastive learning,
+there are works following this direction trying to create more informative negative or positive
+pairs using MixUp [15, 32] or special augmentations [24].
+Our focus is to learn representations that can be used to discover novel ﬁne-grained
+categories within the unlabeled dataset, for which a strong representation is needed. By
+creating informative contrastive pairs by partitioning the dataset into k sub-datasets using
+k-means, examples within each sub-dataset will be similar so that the model will be forced
+to learn more discriminative features. Compared to previous GCD methods with contrastive
+learning [26], our method shows clear performance improvements.
+4 Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY
+Training Data
+…
+…
+𝐾Groups
+ℒcg
+Projection Heads
+ℒfg
+ViT-B
+…
+𝒟0
+Coarse-grained Set
+Fine-grained Set
+ViT-B
+ℎ0
+𝒟1
+𝒟2
+𝒟K
+ℎ1
+ℎ2
+ℎ𝐾
+Figure 2: Overview of our XCon framework. We ﬁrst partition the dataset into K sub-
+datasets using k-means clustering the DINO [1] pretrained representations, then we perform
+joint contrastive representation learning on each of the partitioned sub-datasets D1 ...DK as
+well as on the full dataset D0. Each of the partitioned sub-datasets will force the model to
+learn ﬁne-grained discriminative information, because the background is similar within each
+of the sub-datasets so the model will need to learn the difference on the objects to be able to
+distinguish the examples.
+3
+Methods
+In GCD, the training dataset contains two parts, a labeled dataset Dl =
+
+(xl
+i,yl
+i)
+	
+and
+an unlabeled dataset Du = {(xu
+i ,yu
+i )}, where yl
+i ∈Cl and yu
+i ∈Cu. Cl are only composed of
+seen classes while Cu are composed of both seen and unseen classes, thus Cl ⊆Cu. The goal
+of GCD is to learn a model to categorize the instances in Du by leveraging the information
+from Dl. Compared to the previous NCD problem that considers the class sets as Cl ∩Cu = /
+0,
+GCD is more challenging and practical.
+It has been shown that self-supervised ViT features [1] could be a good initialization
+for representation learning in GCD [26]. In Vaze et al. [26], contrastive learning is used to
+ﬁne-tune the representation using the information from both labeled and unlabeled datasets,
+and it is shown that contrastive learning could indeed improve the performance of the repre-
+sentation on the task of GCD. Informative contrastive pairs are important for representation
+learning, especially in the ﬁne-grained classiﬁcation setting where the model needs to learn
+subtle discriminative cues between categories. We proposed a simple method that partitions
+the dataset into k sub-datasets by using k-means on self-supervised features to help construct
+informative contrastive pairs for representations, the overview of our framework is shown
+in Fig. 2.
+3.1
+Preliminary
+In this section, we brieﬂy review the method proposed in Vaze et al. [26] for GCD,
+which consists of two parts, representation learning and class assignment. For representation
+learning, Vaze et al. [26] ﬁne-tunes the representation by performing supervised contrastive
+learning on the labeled data and unsupervised contrastive learning on all the data to avoid
+outﬁtting the seen classes.
+Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY 5
+The unsupervised contrastive loss is deﬁned as
+Lu
+i = −log
+exp(zi · ˆ
+zi/τ)
+∑n 1[n̸=i] exp(zi ·zn/τ)
+(1)
+where zi = h(f(xi)) is the feature extracted by a backbone f(·) on the input image xi and
+projected to the embedding space via a projection head h(·), ˆ
+zi is the feature from another
+view of the input image ˆ
+xi.
+The supervised contrastive loss is deﬁned as
+Ls
+i = −
+1
+|N(i)| ∑
+q∈N(i)
+log
+exp(zi ·zq/τ)
+∑n 1[n̸=i] exp(zi ·zn/τ)
+(2)
+where N(i) is the set of indices of images in the minibatch that have the same label yi with
+the anchor image i.
+The ﬁnal learning objective is the combination of these two losses
+Lcoarse = (1−λ)
+∑
+i∈BU ∪BL
+Lu
+i +λ ∑
+i∈BL
+Ls
+i
+(3)
+where λ is used to balance between these two terms, BU is a minibatch of unlabeled images,
+and BL is a minibatch of labeled images.
+For class assignments, the semi-supervised k-means method is proposed. The overall
+procedure is similar to the original k-means method [20], with a key difference that semi-
+supervised k-means is aware of the labeled data in Dl, and in each step to recompute the
+cluster assignment, the samples that already have labels will be assigned to the correct cluster
+regardless of its distance to the nearest cluster centroids.
+3.2
+Dataset Partitioning
+The key challenge in representation learning for ﬁne-grained GCD is that the representa-
+tion is required to be sensitive to the detailed discriminative traits of different classes. Learn-
+ing the model by contrasting between examples in the full dataset may not help the model
+to learn such a discriminative representation. Thus, we take advantage of the self-supervised
+representations that can roughly cluster the images according to the overall image statistics
+(e.g. background, object pose, etc.) [1] to perform a preprocess on the full dataset by par-
+titioning it into k expert sub-datasets. The overall statistics within each sub-dataset will be
+similar and then the model will naturally learn ﬁne-grained discriminative features to distin-
+guish between different examples within each sub-dataset. Each of these expert sub-datasets
+will be expected to reduce different class-irrelevant cues represented by different overall
+image statistics.
+Speciﬁcally, We denote the whole training set as D = {(xi,yi)}. The feature vi = f(xi) is
+extracted from each image xi. The vi extracted by DINO [1] is incapable of distinguishing
+between the ﬁne-grained classes since there is no supervision during training, but it will
+provide a rough description of the image so that similar images will be clustered together.
+Then, the whole D is clustered into K sub-datasets {D1,D2,··· ,DK} using k-means, each
+containing similar images and will be used for ﬁne-grained category discovery later.
+3.3
+Learning discriminative representations
+Since the images within each of the partitioned sub-dataset only have ﬁne-grained dif-
+ferences with each other, and each sub-dataset naturally has different global statistics over-
+all, we use a set of projectors hj(·), j = 1,··· ,K to project features to each corresponding
+6 Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY
+sub-spaces in which contrastive learning will be performed. Each projector can be consid-
+ered an expert projector dedicated to learning ﬁne-grained discriminative features from each
+sub-dataset. Similar to Vaze et al. [26], we apply both supervised contrastive loss and self-
+supervised contrastive loss to ﬁne-tune the model. Speciﬁcally, our proposed ﬁne-grained
+self-supervised contrastive loss is
+Lu
+ﬁne = −
+K
+∑
+k=1
+1
+|Bk| ∑
+i∈Bk
+log
+exp(hk(vi)·hk(ˆ
+vi)/τ)
+∑j 1[ j̸=i] exp(hk(vi)·hk(vj)/τ)
+(4)
+where Bk is a minibatch of images sampled from a partitioned dataset Dk, vi and ˆ
+vi are two
+views of one same image through data augmentation, and τ is the temperature parameter.
+The ﬁne-grained supervised contrastive loss is deﬁned similarly
+Ll
+ﬁne = −
+K
+∑
+k=1
+1
+|Bk| ∑
+i∈Bk
+1
+|N(i)| ∑
+q∈N(i)
+log
+exp(hk(vi)·hk(vq)/τ)
+∑j 1[ j̸=i] exp(hk(vi)·hk(vj)/τ)
+(5)
+where N(i) is the set of indices for images with the same label as the anchor image i.
+Thus, the overall loss we propose to learn ﬁne-grained features is the combination of two
+losses deﬁned above
+Lﬁne = (1−λ)Lu
+ﬁne +λLl
+ﬁne
+(6)
+Together with the loss from Vaze et al. [26] deﬁned in Eq. (3), which can be viewed as
+a coarse-grained loss Lcoarse compared to our proposed Lﬁne, our optimization objective is
+L = Lcoarse +αLﬁne
+(7)
+where α is a parameter to balance between our proposed Lﬁne and the original Lcoarse from
+Vaze et al. [26]. After the representation is learned, we run the semi-supervised k-means
+algorithm to obtain the cluster assignments of each sample.
+4
+Experiments
+Datasets. We evaluate our method on both generic image classiﬁcation datasets and ﬁne-
+grained datasets, with a special focus on the performance of the ﬁne-grained image clas-
+siﬁcation datasets. Following previous works, we choose CIFAR-10/100 [18], ImageNet-
+100 [5] as the generic image classiﬁcation datasets. For ﬁne-grained datasets we choose
+CUB-200 [27], Standford Cars [17], FGVC-Aircraft [21], and Oxford-IIIT Pet [22]. These
+ﬁne-grained datasets contain categories from the same entry level classes, e.g., birds, cars,
+aircrafts, and pets. These datasets can be more challenging for GCD methods requiring
+models to learn highly discriminative features [29]. We split the training data into a labeled
+dataset and an unlabeled dataset by ﬁrst dividing all classes equally into a seen class set and
+an unseen one then sampling 50% images from the seen classes as unlabeled data so that
+the unlabeled set Du contains images from both seen classes and unseen classes, while the
+labeled set only contains seen classes, the splits are presented in Table 1.
+Evaluation metric. We employ the clustering accuracy (ACC) on the unlabeled set to mea-
+sure the performance. The evaluation metric is deﬁned as below
+ACC = max
+p∈P(yu)
+1
+N
+N
+∑
+i=1
+1{yi = p( ˆ
+yi)}
+(8)
+Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY 7
+Table 1: Our dataset splits in the experiments.
+Dataset
+CIFAR10
+CIFAR100
+ImageNet-100
+CUB-200
+SCars
+Aircraft
+Pet
+Labelled
+Classes
+5
+80
+50
+100
+98
+50
+19
+Images
+12.5k
+20k
+31.9k
+1498
+2000
+1666
+942
+Unlabelled
+Classes
+10
+100
+100
+200
+196
+100
+37
+Images
+37.5k
+30k
+95.3k
+4496
+6144
+5001
+2738
+where P is the set of all permutations that can match the clustering prediction ˆ
+yi with the
+ground-truth label yi, we use the Hungarian algorithm [19] to ﬁnd the best permutation, and
+N is the number of images in the unlabeled set. Following [26], we use the metric on
+three different sets, including ‘All’ referring to the entire unlabeled set Du, ‘Old’ referring to
+instances in Du belonging to classes in Cl and ‘New’ referring to instances in Du belonging
+to Cu \Cl.
+4.1
+Implementation details
+We follow the implementation of
+[26] to use ViT-B-16 [6] as the backbone of our
+method. We initialize the model with the parameters pretrained by DINO [1] on ImageNet
+and only ﬁne-tune the ﬁnal transformer block while other blocks are frozen. We implement
+the projection heads as three layer MLPs following DINO [1], these projection heads will
+be discarded when testing. The batch size for the entire training dataset is set to 256 and the
+batch size of all the sub-datasets is set to 32. For the ImageNet dataset, all models are trained
+for 60 epochs while for other datasets, models are trained for 200 epochs. We set α to be
+0.1 by default. Similar to [26], we use a base learning rate of 0.1 with a cosine annealing
+schedule and set λ to 0.35. For a fair comparison with existing methods, we use the same
+semi-supervised k-means method as [26] to do the evaluation.
+4.2
+Comparison with the State-of-the-Art
+We ﬁrst compare XCon with the state-of-the-art methods on both generic image classiﬁ-
+cation benchmarks and ﬁne-grained image classiﬁcation benchmarks. The k-means method
+in the tables refers to running k-means directly on the features extracted from DINO without
+any further ﬁnetuning. RankStats+ and UNO+ are two methods modiﬁed from two compet-
+itive baselines for NCD and adopted to the GCD setting, i.e. RankStats [10] and UNO [7].
+The results on generic image classiﬁcation benchmarks are shown in Table 2. On all
+the datasets we tested, XCon shows the best performance on ‘All’, showing that our method
+could improve upon previous works. XCon also achieves comparable results with other
+methods on the other subsets as ‘Old’ and ‘New’. It should be noticed the best performance
+on ImageNet-100 ‘New’ subset is achieved by naively running a k-means on DINO features,
+suggesting that the original features can already represent the unlabeled categories well, and
+XCon achieves the closest performance compared to this baseline, showing that unlike ex-
+isting method potentially introducing damage to original feature quality which results in
+signiﬁcant performance drop, our method can best preserve the high quality of original fea-
+tures.
+We present the results on ﬁne-grained image classiﬁcation benchmarks in Table 3. Our
+method shows the best performance on the ‘All’ and ‘New’ with all four datasets we tested
+while achieving comparable results on ‘Old’, indicating the effectiveness of our method for
+ﬁne-grained category discovery.
+4.3
+Ablation study
+We perform the ablation study by adjusting each element of our method to inspect the
+effectiveness of them. For quicker evaluation, we use two ﬁne-grained datasets, i.e. CUB-
+8 Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY
+Table 2: Results on generic datasets.
+CIFAR10
+CIFAR100
+ImageNet-100
+Method
+All
+Old
+New
+All
+Old
+New
+All
+Old
+New
+k-means [20]
+83.6
+85.7
+82.5
+52.0
+52.2
+50.8
+72.7
+75.5
+71.3
+RankStats+
+46.8
+19.2
+60.5
+58.2
+77.6
+19.3
+37.1
+61.6
+24.8
+UNO+
+68.6
+98.3
+53.8
+69.5
+80.6
+47.2
+70.3
+95.0
+57.9
+GCD [26]
+91.5
+97.9
+88.2
+73.0
+76.2
+66.5
+74.1
+89.8
+66.3
+XCon
+96.0
+97.3
+95.4
+74.2
+81.2
+60.3
+77.6
+93.5
+69.7
+Table 3: Results on ﬁne-grained datasets.
+CUB-200
+Stanford-Cars
+FGVC-Aircraft
+Oxford-Pet
+Method
+All
+Old
+New
+All
+Old
+New
+All
+Old
+New
+All
+Old
+New
+k-means [20]
+34.3
+38.9
+32.1
+12.8
+10.6
+13.8
+16.0
+14.4
+16.8
+77.1
+70.1
+80.7
+RankStats+
+33.3
+51.6
+24.2
+28.3
+61.8
+12.1
+26.9
+36.4
+22.2
+-
+-
+-
+UNO+
+35.1
+49.0
+28.1
+35.5
+70.5
+18.6
+40.3
+56.4
+32.2
+-
+-
+-
+GCD [26]
+51.3
+56.6
+48.7
+39.0
+57.6
+29.9
+45.0
+41.1
+46.9
+80.2
+85.1
+77.6
+XCon
+52.1
+54.3
+51.0
+40.5
+58.8
+31.7
+47.7
+44.4
+49.4
+86.7
+91.5
+84.1
+200 and Standford Cars, and train the model for 100 epochs to ablate the performance.
+Fine-grained and coarse-grained loss.
+Table 4 presents the performance of using dif-
+ferent combinations of loss terms. We observed that with additional supervision from the
+coarse-grained loss, the ACC is improved by 3.3-4.0% on CUB-200 and 15.4-28.5% on
+Standford Cars. As combining the ﬁne-grained and coarse-grained losses achieves the best
+performance, it is proved that our proposed method to learn ﬁne-grained features improves
+GCD methods’ performance in ﬁne-grained benchmarks.
+Table 4: Ablation study of ﬁne-grained loss and coarse-grained loss.
+Lﬁne
+Lcoarse
+CUB-200
+Stanford-Cars
+All
+Old
+New
+All
+Old
+New
+✓
+48.0
+50.5
+46.8
+21.3
+30.6
+16.8
+✓
+49.9
+53.4
+48.2
+37.1
+57.9
+27.0
+✓
+✓
+51.8
+53.8
+50.8
+41.0
+59.1
+32.2
+The weight of ﬁne-grained loss.
+We analyze the choice of the weight α for ﬁne-grained
+loss in Table 5. We ﬁnd that XCon can consistently outperform the baseline(α = 0) with
+different α, showing the robust effectiveness of our method. The best result is achieved with
+α = 0.4 on CUB-200 and with α = 0.2 on Standford Cars.
+The number of sub-datasets.
+The effect of the sub-dataset number is illustrated in Ta-
+ble 6. Although the performance of XCon is consistently better than the baseline’s, it still
+varies greatly depending on the number of sub-datasets. When K = 2, it can reach the high-
+est on the ‘Old’ set, but the lowest on the ‘New’ set, that means with two groups, the overall
+difference between features is not so great inside each group that the model tends to focus
+more on the existing coarse-grained knowledge learned from the seen classes.
+Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY 9
+Table 5: Ablation study on the weight α of loss. α = 0 is the baseline(Vaze et al. [26]).
+α
+CUB-200
+Stanford-Cars
+All
+Old
+New
+All
+Old
+New
+0
+49.9
+53.4
+48.2
+37.1
+57.9
+27.0
+0.1
+51.8
+53.8
+50.8
+41.0
+59.1
+32.2
+0.2
+51.6
+54.5
+50.2
+42.4
+63.0
+32.4
+0.4
+53.4
+58.6
+50.9
+41.1
+61.2
+31.4
+DINO
+XCon
+Figure 3: Feature visualization on CIFAR10 with TSNE.
+We further visualize the feature spaces with TSNE [25] on CIFAR10 by mapping the
+features into two dimensions for a more direct qualitative analysis. In Fig. 3, we cluster
+the unlabeled data and compare results from the initial model(DINO) with ones from our
+method(XCon). It is clear that the improvement from DINO to our method is signiﬁcant.
+DINO can cluster the features into 10 groups roughly, but many samples appear in groups
+that correspond to other classes. In contrast to DINO, with our model, we can see clear
+boundaries between different groups, and each group is corresponding to one certain cate-
+gory in CIFAR10.
+5
+Conclusion
+In this paper, we propose XCon to address the problem of generalized category discovery
+with ﬁne-grained image classiﬁcation benchmarks. XCon ﬁrst partitions the dataset into K
+sub-dataset using k-means clustering on a self-supervised representation. Each partitioned
+sub-dataset can be seen as a subset of images that are visually similar and have close coarse-
+grained representation so that contrastive learning within each of these sub-datasets will
+force the model to learn ﬁne-grained discriminative features that can help discover ﬁne-
+grained categories. Experiments on four ﬁne-grained image classiﬁcation benchmarks show
+clear performance improvements of XCon, validating the effectiveness of our method.
+Acknowledge
+The author would like to acknowledge compute support from LunarAI.
+10Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY
+Table 6: Ablation study on the number K of split sub-groups.
+K
+CUB-200
+Stanford-Cars
+All
+Old
+New
+All
+Old
+New
+1
+49.9
+53.4
+48.2
+37.1
+57.9
+27.0
+2
+51.4
+59.3
+47.4
+40.9
+61.0
+31.1
+4
+51.7
+54.6
+50.2
+39.8
+55.3
+32.3
+6
+50.3
+51.9
+49.5
+42.1
+60.7
+33.1
+8
+51.8
+53.8
+50.8
+41.0
+59.1
+32.2
+References
+[1] Mathilde Caron, Hugo Touvron, Ishan Misra, Hervé Jégou, Julien Mairal, Piotr Bo-
+janowski, and Armand Joulin. Emerging properties in self-supervised vision transform-
+ers. In Proceedings of the IEEE/CVF International Conference on Computer Vision,
+pages 9650–9660, 2021.
+[2] Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton. A simple
+framework for contrastive learning of visual representations. In International confer-
+ence on machine learning, pages 1597–1607. PMLR, 2020.
+[3] Xinlei Chen, Saining Xie, and Kaiming He.
+An empirical study of training self-
+supervised vision transformers. In Proceedings of the IEEE/CVF International Con-
+ference on Computer Vision, pages 9640–9649, 2021.
+[4] Haoang Chi, Feng Liu, Wenjing Yang, Long Lan, Tongliang Liu, Bo Han, Gang Niu,
+Mingyuan Zhou, and Masashi Sugiyama. Meta discovery: Learning to discover novel
+classes given very limited data. In International Conference on Learning Representa-
+tions, 2021.
+[5] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. Imagenet: A
+large-scale hierarchical image database. In 2009 IEEE conference on computer vision
+and pattern recognition, pages 248–255. Ieee, 2009.
+[6] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua
+Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Syl-
+vain Gelly, et al. An image is worth 16x16 words: Transformers for image recognition
+at scale. arXiv preprint arXiv:2010.11929, 2020.
+[7] Enrico Fini, Enver Sangineto, Stéphane Lathuilière, Zhun Zhong, Moin Nabi, and Elisa
+Ricci. A uniﬁed objective for novel class discovery. In Proceedings of the IEEE/CVF
+International Conference on Computer Vision, pages 9284–9292, 2021.
+[8] Kai Han, Andrea Vedaldi, and Andrew Zisserman. Learning to discover novel visual
+categories via deep transfer clustering. In Proceedings of the IEEE/CVF International
+Conference on Computer Vision, pages 8401–8409, 2019.
+[9] Kai Han, Sylvestre-Alvise Rebufﬁ, Sebastien Ehrhardt, Andrea Vedaldi, and Andrew
+Zisserman. Automatically discovering and learning new visual categories with rank-
+ing statistics. In International Conference on Learning Representations, 2020. URL
+https://openreview.net/forum?id=BJl2_nVFPB.
+Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY11
+[10] Kai Han, Sylvestre-Alvise Rebufﬁ, Sebastien Ehrhardt, Andrea Vedaldi, and Andrew
+Zisserman. Autonovel: Automatically discovering and learning novel visual categories.
+IEEE Transactions on Pattern Analysis and Machine Intelligence, 2021.
+[11] Kaiming He, Haoqi Fan, Yuxin Wu, Saining Xie, and Ross Girshick. Momentum con-
+trast for 393 unsupervised visual representation learning. In Conference on Computer
+Vision and Pattern, volume 394, 2019.
+[12] Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, and Ross Girshick.
+Masked autoencoders are scalable vision learners. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, pages 16000–16009, 2022.
+[13] Yen-Chang Hsu, Zhaoyang Lv, and Zsolt Kira. Learning to cluster in order to transfer
+across domains and tasks. arXiv preprint arXiv:1711.10125, 2017.
+[14] Yen-Chang Hsu, Zhaoyang Lv, Joel Schlosser, Phillip Odom, and Zsolt Kira. Multi-
+class classiﬁcation without multi-class labels. arXiv preprint arXiv:1901.00544, 2019.
+[15] Yannis Kalantidis, Mert Bulent Sariyildiz, Noe Pion, Philippe Weinzaepfel, and Diane
+Larlus. Hard negative mixing for contrastive learning. Advances in Neural Information
+Processing Systems, 33:21798–21809, 2020.
+[16] Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, Phillip
+Isola, Aaron Maschinot, Ce Liu, and Dilip Krishnan. Supervised contrastive learning.
+Advances in Neural Information Processing Systems, 33:18661–18673, 2020.
+[17] Jonathan Krause, Michael Stark, Jia Deng, and Li Fei-Fei. 3d object representations for
+ﬁne-grained categorization. In 4th International IEEE Workshop on 3D Representation
+and Recognition (3dRR-13), Sydney, Australia, 2013.
+[18] Alex Krizhevsky and Geoffrey Hinton. Learning multiple layers of features from tiny
+images. Technical report, 2009.
+[19] Harold W Kuhn. The hungarian method for the assignment problem. Naval research
+logistics quarterly, 2(1-2):83–97, 1955.
+[20] James MacQueen. Some methods for classiﬁcation and analysis of multivariate obser-
+vations. In Proceedings of the Fifth Berkeley Symposium on Mathematical Statistics
+and Probability, 1967.
+[21] Subhransu Maji, Esa Rahtu, Juho Kannala, Matthew Blaschko, and Andrea Vedaldi.
+Fine-grained visual classiﬁcation of aircraft. arXiv preprint arXiv:1306.5151, 2013.
+[22] Omkar M Parkhi, Andrea Vedaldi, Andrew Zisserman, and CV Jawahar. Cats and
+dogs. In 2012 IEEE conference on computer vision and pattern recognition, pages
+3498–3505. IEEE, 2012.
+[23] Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun. Faster r-cnn: Towards real-
+time object detection with region proposal networks. Advances in neural information
+processing systems, 28, 2015.
+12Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY
+[24] Zhiqiang Shen, Zechun Liu, Zhuang Liu, Marios Savvides, Trevor Darrell, and Eric
+Xing.
+Un-mix: Rethinking image mixtures for unsupervised visual representation
+learning. In Proceedings of the AAAI Conference on Artiﬁcial Intelligence (AAAI),
+2022.
+[25] Laurens Van Der Maaten. Accelerating t-sne using tree-based algorithms. The Journal
+of Machine Learning Research, 15(1):3221–3245, 2014.
+[26] Sagar Vaze, Kai Han, Andrea Vedaldi, and Andrew Zisserman. Generalized category
+discovery. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pat-
+tern Recognition, pages 7492–7501, 2022.
+[27] Catherine Wah, Steve Branson, Peter Welinder, Pietro Perona, and Serge Belongie. The
+caltech-ucsd birds-200-2011 dataset. Technical Report CNS-TR-2011-001, California
+Institute of Technology, 2011.
+[28] Zhirong Wu, Yuanjun Xiong, Stella X Yu, and Dahua Lin. Unsupervised feature learn-
+ing via non-parametric instance discrimination. In Proceedings of the IEEE conference
+on computer vision and pattern recognition, pages 3733–3742, 2018.
+[29] Bingchen Zhao and Kai Han. Novel visual category discovery with dual ranking statis-
+tics and mutual knowledge distillation. Advances in Neural Information Processing
+Systems, 34:22982–22994, 2021.
+[30] Zhun Zhong, Enrico Fini, Subhankar Roy, Zhiming Luo, Elisa Ricci, and Nicu Sebe.
+Neighborhood contrastive learning for novel class discovery. In Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 10867–
+10875, 2021.
+[31] Zhun Zhong, Linchao Zhu, Zhiming Luo, Shaozi Li, Yi Yang, and Nicu Sebe. Open-
+mix: Reviving known knowledge for discovering novel visual categories in an open
+world. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, pages 9462–9470, 2021.
+[32] Rui Zhu, Bingchen Zhao, Jingen Liu, Zhenglong Sun, and Chang Wen Chen. Improv-
+ing contrastive learning by visualizing feature transformation. In Proceedings of the
+IEEE/CVF International Conference on Computer Vision, pages 10306–10315, 2021.
+Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY13
+A
+Different self-supervised representations
+The self-supervised representation provides us the information to partition the training
+data into k expert sub-datasets, so we analyze the performance of our method by ﬁne-tuning
+different pretrained representations of other self-supervised ViT models, i.e. MoCo v3 [3]
+and MAE [12]. We initialize the ViT-B-16 model [6] with the parameters pretrained on
+ImageNet-1k by MoCo v3 for 300 epochs and by MAE for 800 epochs respectively. The
+result in Table 7 shows that with the self-supervised representation of DINO [1], our method
+performs 7.3 −20.7% better than the other two on CUB-200 and 1.8 −22.4% better on
+Standford-Cars. We observe that DINO still shows the best performance on clustering the
+data based on class-irrelevant informations.
+Table 7: Results with different self-supervised representations.
+self-supervised
+ViT model
+CUB-200
+Stanford-Cars
+All
+Old
+New
+All
+Old
+New
+DINO
+51.8
+53.8
+50.8
+41.0
+59.1
+32.2
+MoCo v3
+37.6
+42.8
+35.1
+24.7
+36.7
+18.9
+MAE
+35.5
+46.5
+30.1
+38.7
+56.0
+30.4
+B
+Estimating the number of classes
+As a more realistic scenario, the prior knowledge of the number of classes is unknown in
+the GCD. We follow the method in [26] to estimate the number of classes in the unlabeled
+dataset by leveraging the information of the labeled dataset. We compare our estimated
+number of classes in unlabeled data
+
+ ˆ
+Cu
+ with the ground truth number of classes in unlabeled
+data |Cu| in Table 8. We ﬁnd that on Standfor-Cars and FGVC-Aircraft, the number of classes
+estimated by our method is signiﬁcantly closer to the ground truth compared with GCD [26].
+Our method tends to show better performance on ﬁne-grained datasets, given that the dataset
+partitioning can help the model learn more discriminative features when facing the more
+challenging datasets that have little obvious difference.
+Table 8: Estimation of the number of classes in unlabeled data.
+CIFAR10
+CIFAR100
+ImageNet-100
+CUB-200
+Standford-Cars
+FGVC-Aircraft
+Oxford-Pet
+Ground truth
+10
+100
+100
+200
+196
+100
+37
+GCD [26]
+9
+100
+109
+231
+230
+80
+34
+XCon
+8
+97
+109
+236
+206
+101
+34
+C
+Performance with estimated class number
+We use the class number estimated in Table 8 to evaluate our method, displaying the
+performance of our method when the unlabeled class number is unavailable. We report the
+results on generic image classiﬁcation benchmarks in Table 9 and the results on ﬁne-grained
+image classiﬁcation benchmarks in Table 10. With our estimated class number
+
+ ˆ
+Cu
+, our
+method performs better on Standford-Cars and also reaches comparable results on the other
+ﬁve datasets except CIFAR10, which shows that our method is also promising under the
+more realistic condition.
+D
+Ablation on contrastive ﬁne-tuning
+We further ablate the components of contrastive loss in Table 11. We ﬁnd that only with
+unsupervised contrastive loss, i.e. λ = 0, the ACC drops 21.5 −23.6% on CUB-200 and
+22.2 −46.6% on Standford-Cars, which means the combination of supervised contrastive
+14Y. FEI ET AL.: LEARNING WITH EXPERTS FOR FINE-GRAINED CATEGORY DISCOVERY
+Table 9: Results on generic datasets with our estimated class number.
+known Cu
+CIFAR10
+CIFAR100
+ImageNet-100
+All
+Old
+New
+All
+Old
+New
+All
+Old
+New
+
+96.0
+97.3
+95.4
+74.2
+81.2
+60.3
+77.6
+93.5
+69.7
+
+70.1
+97.4
+56.5
+72.5
+80.3
+56.8
+75.6
+91.5
+67.6
+Table 10: Results on ﬁne-grained datasets with our estimated class number.
+known Cu
+CUB-200
+Stanford-Cars
+FGVC-Aircraft
+Oxford-Pet
+All
+Old
+New
+All
+Old
+New
+All
+Old
+New
+All
+Old
+New
+
+52.1
+54.3
+51.0
+40.5
+58.8
+31.7
+47.7
+44.4
+49.4
+86.7
+91.5
+84.1
+
+51.0
+57.8
+47.6
+41.3
+58.8
+32.8
+46.1
+47.6
+45.3
+82.1
+81.7
+82.4
+loss and unsupervised contrastive loss with the balanced parmeter λ = 0.35 is necessary and
+can reach the best performance.
+Table 11: Ablation study of contrastive loss.
+λ
+CUB-200
+Stanford-Cars
+All
+Old
+New
+All
+Old
+New
+0
+29.6
+30.2
+29.3
+10.8
+12.5
+10.0
+0.35
+51.8
+53.8
+50.8
+41.0
+59.1
+32.2
