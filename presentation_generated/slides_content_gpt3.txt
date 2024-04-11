@@ -1,31 +1,39 @@
 Slide 1
-Title: XCon: Learning with Experts for Fine-grained Category Discovery
-Content: Introducing a novel approach for Generalized Category Discovery (GCD) in fine-grained datasets.
+Title: Introduction
+Content: 
+- Introduction of the problem of Generalized Category Discovery (GCD) in fine-grained datasets.
+- Description of the challenges faced in fine-grained classification tasks due to high class similarities and intra-class variances.
 
 Slide 2
-Title: Introduction
-Content: Deep learning advancements in computer vision, challenges in fine-grained recognition, and the significance of Generalized Category Discovery (GCD).
+Title: Related Works
+Content: 
+- Overview of Novel Category Discovery (NCD) and its relevance to XCon's objectives.
+- Discussion on previous approaches utilizing transfer learning, self-supervision, and contrastive learning in categorizing unseen classes.
 
 Slide 3
-Title: Related Works
-Content: Overview of Novel Category Discovery (NCD), transfer learning, self-supervision, and contrastive learning in the context of GCD tasks.
+Title: Methodology
+Content: 
+- Explanation of Expert-Contrastive Learning (XCon) approach.
+- Description of partitioning the dataset into expert sub-datasets using k-means clustering.
+- Details on supervised and unsupervised contrastive learning across full and sub-datasets.
 
 Slide 4
-Title: Methodology
-Content: Description of Expert-Contrastive Learning (XCon) approach, including dataset partitioning with k-means clustering, supervised and unsupervised contrastive learning, and optimization objective.
+Title: Experiments and Results
+Content: 
+- Evaluation of XCon on CIFAR-10/100, ImageNet-100, CUB-200, Stanford Cars, FGVC-Aircraft, and Oxford-IIIT Pet datasets.
+- Showcase of state-of-the-art performance in fine-grained category discovery benchmarks.
+- Implementation details using ViT-B-16 model and DINO-pretrained parameters.
 
 Slide 5
-Title: Experiments and Results
-Content: Evaluation of XCon on CIFAR-10/100, ImageNet-100, CUB-200, Stanford Cars, FGVC-Aircraft, and Oxford-IIIT Pet datasets, showcasing state-of-the-art performance in fine-grained category discovery benchmarks.
+Title: Ablation Studies
+Content: 
+- Overview of ablation studies conducted to validate components of XCon.
+- Discussion on the impact of weight of fine-grained loss and the number of sub-datasets.
+- Insights into optimal settings for different datasets based on experimental results.
 
 Slide 6
-Title: Implementation Details
-Content: Implementation specifics like ViT-B-16 model initialization with DINO-pretrained parameters, fine-tuning, supervised and unsupervised contrastive losses, and post-training steps.
-
-Slide 7
-Title: Ablation Studies
-Content: Validation of XCon components through ablation studies, including the impact of fine-grained loss weight and number of sub-datasets, offering insights into optimal configurations.
-
-Slide 8
 Title: Conclusion
-Content: Summary of XCon's advancements in fine-grained category discovery, its potential for unsupervised and semi-supervised learning, and encouragement for further exploration with the publicly available codebase.
+Content: 
+- Summary of XCon's significance in fine-grained category discovery.
+- Mention of the method's success across various benchmarks and its contribution to unsupervised and semi-supervised learning in fine-grained classification.
+- Encouragement for further exploration and adaptation of XCon within the research community.

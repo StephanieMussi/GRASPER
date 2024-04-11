@@ -1,29 +1,22 @@
   Sure! Here is the presentation slides based on the provided text:
 Slide 1: Introduction
-Title: Generalized Category Discovery and XCon
-Content:
-* Introduces a novel approach to address the problem of Generalized Category Discovery (GCD) in computer vision tasks.
+Title: Learning with Experts for Fine-grained Category Discovery
+Content: The paper "XCon: Learning with Experts for Fine-grained Category Discovery" by Yixin Fei et al. introduces a novel approach to address the problem of Generalized Category Discovery (GCD) in fine-grained datasets. GCD aims to cluster unlabeled images by leveraging information from a set of seen (labeled) classes, which is challenging due to large inter-class similarities and intra-class variances. XCon enhances the model's ability to discern fine-grained discriminative features by partitioning the dataset into sub-datasets using k-means clustering and applying contrastive learning within these partitions.
 Slide 2: Related Works
-Title: Overview of Novel Category Discovery and Contrastive Learning
-Content:
-* Earlier works in NCD have utilized transfer learning and self-supervision techniques to categorize unseen classes based on knowledge transferred from seen classes.
+Title: Novel Category Discovery vs Fine-grained Category Discovery
+Content: Earlier works in Novel Category Discovery (NCD) have utilized transfer learning and self-supervision techniques to categorize unseen classes based on knowledge transferred from seen classes. However, these methods are limited in their effectiveness in fine-grained classification tasks where class distinctions are more nuanced. XCon addresses this challenge by leveraging expert sub-datasets and a combination of contrastive learning approaches.
 Slide 3: Methodology
 Title: Partitioning the Dataset using k-means Clustering
-Content:
-* XCon partitions the dataset into several sub-datasets (referred to as expert datasets) using k-means clustering on self-supervised representations.
+Content: XCon partitions the dataset into several sub-datasets (referred to as expert datasets) using k-means clustering on self-supervised representations. This partitioning is based on the insight that class-irrelevant cues can lead to misleading clustering, thus, by creating more homogenized sub-datasets, the model is compelled to learn finer distinctions between classes.
 Slide 4: Learning Process
-Title: Dual Approach to Learning - Supervised and Unsupervised Contrastive Learning
-Content:
-* XCon learns from both coarse-grained (overall dataset) and fine-grained (sub-dataset) features through a dual approach that combines supervised and unsupervised contrastive learning across the full dataset and within the sub-datasets.
+Title: Supervised and Unsupervised Contrastive Learning
+Content: The learning process involves both supervised and unsupervised contrastive learning across the full dataset and within the sub-datasets. The losses from these learning processes are combined to form the model's final optimization objective. This dual approach allows XCon to learn from both coarse-grained (overall dataset) and fine-grained (sub-dataset) features.
 Slide 5: Experiments and Results
-Title: XCon Achieves State-of-the-Art Performance on Fine-Grained Category Discovery Benchmarks
-Content:
-* The effectiveness of XCon was evaluated on various datasets, including CIFAR-10/100, ImageNet-100, CUB-200, Stanford Cars, FGVC-Aircraft, and Oxford-IIIT Pet. These datasets encompass a wide range of classification challenges, from generic to fine-grained categories. XCon achieved state-of-the-art performance on several fine-grained category discovery benchmarks, demonstrating its capability to enhance classification performance significantly in challenging datasets.
+Title: State-of-the-Art Performance on Fine-grained Category Discovery Benchmarks
+Content: The effectiveness of XCon was evaluated on various datasets, including CIFAR-10/100, ImageNet-100, CUB-200, Stanford Cars, FGVC-Aircraft, and Oxford-IIIT Pet. These datasets encompass a wide range of classification challenges, from generic to fine-grained categories. XCon achieved state-of-the-art performance on several fine-grained category discovery benchmarks, demonstrating its capability to enhance classification performance significantly in challenging datasets.
 Slide 6: Ablation Studies
 Title: Validating the Effectiveness of XCon Components
-Content:
-* Ablation studies were conducted to validate the effectiveness of various components of XCon, including the impact of the weight of fine-grained loss and the number of sub-datasets. These studies confirmed the robustness of the XCon approach across different configurations and provided insights into optimal settings for different datasets.
+Content: Ablation studies were conducted to validate the effectiveness of various components of XCon, including the impact of the weight of fine-grained loss and the number of sub-datasets. These studies confirmed the robustness of the XCon approach across different configurations and provided insights into optimal settings for different datasets.
 Slide 7: Conclusion
-Title: XCon - A Novel Approach to Fine-Grained Category Discovery
-Content:
-* Introduces a novel method for fine-grained category discovery by leveraging expert sub-datasets and a combination of contrastive learning approaches. Its success across various benchmarks signifies a significant advancement in the field, offering a new direction for research in unsupervised and semi-supervised learning within fine-grained classification scenarios. The method's codebase has been made publicly available, encouraging further exploration and adaptation of this approach within the research community.
+Title: A Novel Approach to Fine-grained Category Discovery
+Content: XCon introduces a novel method for fine-grained category discovery by leveraging expert sub-datasets and a combination of contrastive learning approaches. Its success across various benchmarks signifies a significant advancement in the field, offering a new direction for research in unsupervised and semi-supervised learning within fine-grained classification scenarios. The method's codebase has been made publicly available, encouraging further exploration and adaptation of this approach within the research community.
