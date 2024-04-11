@@ -1,0 +1,31 @@
+Slide 1
+Title: XCon: Learning with Experts for Fine-grained Category Discovery
+Content: Introducing a novel approach for Generalized Category Discovery (GCD) in fine-grained datasets.
+
+Slide 2
+Title: Introduction
+Content: Deep learning advancements in computer vision, challenges in fine-grained recognition, and the significance of Generalized Category Discovery (GCD).
+
+Slide 3
+Title: Related Works
+Content: Overview of Novel Category Discovery (NCD), transfer learning, self-supervision, and contrastive learning in the context of GCD tasks.
+
+Slide 4
+Title: Methodology
+Content: Description of Expert-Contrastive Learning (XCon) approach, including dataset partitioning with k-means clustering, supervised and unsupervised contrastive learning, and optimization objective.
+
+Slide 5
+Title: Experiments and Results
+Content: Evaluation of XCon on CIFAR-10/100, ImageNet-100, CUB-200, Stanford Cars, FGVC-Aircraft, and Oxford-IIIT Pet datasets, showcasing state-of-the-art performance in fine-grained category discovery benchmarks.
+
+Slide 6
+Title: Implementation Details
+Content: Implementation specifics like ViT-B-16 model initialization with DINO-pretrained parameters, fine-tuning, supervised and unsupervised contrastive losses, and post-training steps.
+
+Slide 7
+Title: Ablation Studies
+Content: Validation of XCon components through ablation studies, including the impact of fine-grained loss weight and number of sub-datasets, offering insights into optimal configurations.
+
+Slide 8
+Title: Conclusion
+Content: Summary of XCon's advancements in fine-grained category discovery, its potential for unsupervised and semi-supervised learning, and encouragement for further exploration with the publicly available codebase.

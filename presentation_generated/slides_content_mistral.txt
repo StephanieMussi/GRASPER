@@ -1,0 +1,27 @@
+ Slide 1: Introduction to Generalized Category Discovery (GCD)
+Title: GCD: Leveraging Labeled Data for Unlabeled Instance Categorization
+Content: With the advance of deep learning, progress in computer vision tasks relies heavily on large-scale annotated data. However, collecting and annotating such datasets for fine-grained recognition tasks is challenging due to expertise required and new classes emerging continuously. GCD proposes a solution by utilizing labeled datasets to categorize unlabeled instances based on implicit criteria set by the labeled data.
+
+Slide 2: Motivation and Related Works
+Title: Motivation: Challenges in Fine-Grained Category Discovery
+Content: Traditional methods struggle with large inter-class similarities and intra-class variances, leading to suboptimal performance due to irrelevant cues. Novel Category Discovery (NCD) has been proposed as an alternative, but its effectiveness in fine-grained classification is limited.
+
+Slide 3: XCon Methodology
+Title: XCon: Expert-Contrastive Learning for Fine-Grained GCD
+Content: Partitioning dataset into sub-datasets using k-means clustering on self-supervised representations, followed by supervised and unsupervised contrastive learning. Dual approach allows learning from coarse-grained and fine-grained features.
+
+Slide 4: XCon Experiments and Results
+Title: Evaluation of XCon: State-of-the-Art Performance on Various Datasets
+Content: XCon achieved superior results on CIFAR-10/100, ImageNet-100, CUB-200, Stanford Cars, FGVC-Aircraft, and Oxford-IIIT Pet. Demonstrating significant enhancement in challenging datasets.
+
+Slide 5: XCon Implementation Details
+Title: Implementation of XCon: ViT-B-16 Model with DINO Pretrained Parameters
+Content: Fine-tuning final transformer block, using supervised and unsupervised contrastive losses, discarding projection heads post-training.
+
+Slide 6: Ablation Studies in XCon
+Title: Validating Components of XCon: Impact on Performance
+Content: Studies confirmed robustness across different configurations and provided insights into optimal settings for various datasets.
+
+Slide 7: Conclusion
+Title: Advancements in Fine-Grained Category Discovery with XCon
+Content: XCon offers a significant advancement in the field, encouraging further exploration and adaptation within the research community. Codebase is publicly available.

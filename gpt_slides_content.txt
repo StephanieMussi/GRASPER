@@ -1,0 +1,35 @@
+Slide 1: Introduction to XCon
+XCon: Learning with Experts for Fine-grained Category Discovery.
+Addressing the challenge of generalized category discovery (GCD) leveraging seen class information.
+Introduction of Expert-Contrastive Learning as a novel method.
+Motivation: The difficulty in collecting large-scale, fine-grained datasets like ImageNet or COCO due to the need for expert annotations.
+
+Slide 2: Challenges in Fine-grained Category Discovery
+Main challenge: High inter-class similarity and intra-class variance in fine-grained categories.
+Example: Differentiating bird species based on subtle features like beak shape.
+Limitation of unsupervised representations clustering data on irrelevant cues (e.g., background or object pose).
+
+Slide 3: XCon Methodology Overview
+Proposal of partitioning data into k sub-datasets using k-means clustering on DINO pretrained representations.
+Execution of joint contrastive representation learning on each partitioned sub-dataset.
+Improvement over traditional GCD methods with a focus on constructing informative contrastive pairs.
+
+Slide 4: Learning Objective and Process
+Detailed review of the semi-supervised k-means method for dataset partitioning.
+The learning objective combines supervised and unsupervised contrastive learning.
+Emphasis on the necessity of fine-grained discriminative trait sensitivity in representation learning.
+
+Slide 5: Implementation and Results
+Method validation on seven generalized category discovery benchmarks, setting new performance records.
+Clustering accuracy (ACC) employed as the primary performance metric.
+Achievements on CIFAR-10/100, ImageNet-100, and Stanford Cars datasets with significant ACC improvements.
+
+Slide 6: Model Fine-tuning and Evaluation
+Utilization of contrastive loss adjustments to fine-tune the model for optimal fine-grained feature learning.
+Performance evaluation based on both generic and fine-grained image classification datasets.
+Ablation study insights indicating the effectiveness of various method components.
+
+Slide 7: Conclusion and Contributions
+XCon significantly enhances generalized category discovery, overcoming traditional GCD method limitations.
+Clear performance advancements on fine-grained image classification benchmarks.
+Acknowledgement of compute support from LunarAI and presentation of results substantiating XCon's efficacy.
