@@ -4,3 +4,4 @@ pymupdf
 openai
 python-pptx
 llama-cpp-python
+argparse
