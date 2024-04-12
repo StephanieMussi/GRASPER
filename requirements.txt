@@ -1,0 +1,6 @@
+transformers
+torch
+pymupdf
+openai
+python-pptx
+llama-cpp-python
