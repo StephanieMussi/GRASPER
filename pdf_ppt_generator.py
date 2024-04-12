@@ -27,12 +27,13 @@ def ask_for_file():
     return file_path
 
 def extract_text_from_pdf(pdf_path):
+    paper_title = get_paper_title(pdf_path)
     doc = fitz.open(pdf_path)  
     all_text = ""  
     for page in doc:
         all_text += page.get_text() 
     doc.close() 
-    return all_text
+    return all_text, paper_title
 
 def get_paper_title(pdf_path):
     filename_with_extension = os.path.basename(pdf_path)
@@ -190,7 +191,18 @@ def convert_content(final_summary, converter_type, openaikey=None):
     elif converter_type == 'mistral':
         return convert_content_mistral(final_summary)
 
-def animate():
+def animate_extraction():
+    global extracting
+    i = 0
+    while extracting:
+        sys.stdout.write("\Extracting text" + "." * i + " " * (3 - i)) 
+        sys.stdout.flush()
+        time.sleep(0.5)  
+        i = (i + 1) % 4 
+    sys.stdout.write("\r" + " " * 20 + "\r")  
+    sys.stdout.flush()
+
+def animate_summarization():
     global summarizing
     i = 0
     while summarizing:
@@ -210,6 +222,17 @@ def animate_conversion():
         time.sleep(0.5) 
         i = (i + 1) % 4  
     sys.stdout.write("\r" + " " * 30 + "\r") 
+    sys.stdout.flush()
+
+def animate_generation():
+    global generating
+    i = 0
+    while generating:
+        sys.stdout.write("\rGenerating slides" + "." * i + " " * (3 - i)) 
+        sys.stdout.flush()
+        time.sleep(0.5)  
+        i = (i + 1) % 4 
+    sys.stdout.write("\r" + " " * 20 + "\r")  
     sys.stdout.flush()
 
 def add_title_slide(title, prs):
@@ -272,14 +295,18 @@ def main():
     pdf_path = ask_for_file()
 
     """Step1. Extract text from pdf"""
-    print("Extracting text...")
-    long_text = extract_text_from_pdf(pdf_path)
-    paper_title = get_paper_title(pdf_path)
+    global extracting
+    extracting = True
+    anim_thread = threading.Thread(target=animate_extraction)
+    anim_thread.start()
+    long_text, paper_title = extract_text_from_pdf(pdf_path)
+    extracting = False
+    anim_thread.join() 
 
     """Step2. Summarize text to reduce length"""
     global summarizing
     summarizing = True
-    anim_thread = threading.Thread(target=animate)
+    anim_thread = threading.Thread(target=animate_summarization)
     anim_thread.start()
     final_summary = summarize_text(long_text, args.summarizer)
     summarizing = False
@@ -295,10 +322,15 @@ def main():
     conv_thread.join() 
 
     """Step4. Generate presentation slides from content"""
-    print("Generating slides...")
-    template_path = './template.pptx'
-    save_path = './presentation.pptx'
+    template_path = './source/template.pptx'
+    save_path = './output/'+paper_title+'.pptx'
+    global generating
+    generating = True
+    anim_thread = threading.Thread(target=animate_generation)
+    anim_thread.start()
     generate_slides(paper_title, message, template_path, save_path)
+    generating = False
+    anim_thread.join() 
     print("Slides is saved to: " + os.path.abspath(save_path))
 
 
