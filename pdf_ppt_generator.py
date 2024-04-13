@@ -117,9 +117,9 @@ def summarize_text(long_text, summarizer_type):
     if summarizer_type == 'bart':
         return summarize_text_bart(long_text, max_text_length)
     elif summarizer_type == 't5':
-        return summarize_text_t5(long_text, max_text_length)
+        return summarize_text_T5(long_text, max_text_length)
     elif summarizer_type == 'led':
-        return summarize_text_led(long_text, max_text_length)
+        return summarize_text_LED(long_text, max_text_length)
 
 def convert_content_gpt3(final_summary, openaikey):
     client = OpenAI(api_key = openaikey)
