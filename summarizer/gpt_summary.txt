@@ -1,0 +1,25 @@
+The paper "XCon: Learning with Experts for Fine-grained Category Discovery" by Yixin Fei et al. introduces a novel approach to address the problem of Generalized Category Discovery (GCD). GCD aims to cluster unlabeled images by leveraging information from a set of seen (labeled) classes, a task especially challenging within fine-grained datasets where classes are highly similar to one another. Traditional methods struggle with large inter-class similarities and intra-class variances, often leading to suboptimal performance due to irrelevant cues being used for classification. The proposed solution, Expert-Contrastive Learning (XCon), enhances the model's ability to discern fine-grained discriminative features by initially partitioning the dataset into sub-datasets using k-means clustering and subsequently applying contrastive learning within these partitions.
+
+Introduction
+With the advent of deep learning, there's been significant progress in computer vision tasks where large-scale annotated data is available. However, collecting and annotating such datasets, especially for fine-grained recognition tasks (e.g., bird species identification), remains a challenge due to the expertise required and the continuous emergence of new classes. To mitigate the reliance on extensive labeled datasets, the concept of generalized category discovery (GCD) has been proposed. Unlike semi-supervised learning, GCD does not presume knowledge of all classes in the dataset, making it a more challenging yet practical task.
+
+XCon focuses on fine-grained GCD, aiming to leverage labeled datasets representing known knowledge to categorize unlabeled instances based on the implicit criteria set by the labeled data. This approach addresses the challenge posed by the high similarity between different classes and the variability within the same class in fine-grained datasets.
+
+Related Works
+The task of Novel Category Discovery (NCD) closely aligns with XCon's objectives. Earlier works in NCD have utilized transfer learning and self-supervision techniques to categorize unseen classes based on knowledge transferred from seen classes. Contrastive learning, a method to learn representations by contrasting positive pairs against negative ones, has shown promise in NCD tasks. However, its effectiveness in fine-grained classification, where XCon is focused, is limited due to the nuanced differences between classes that require more discriminative feature learning.
+
+Methodology
+XCon partitions the dataset into several sub-datasets (referred to as expert datasets) using k-means clustering on self-supervised representations. This partitioning is based on the insight that class-irrelevant cues (like background or object pose) can lead to misleading clustering, thus, by creating more homogenized sub-datasets, the model is compelled to learn finer distinctions between classes.
+
+The learning process involves both supervised and unsupervised contrastive learning across the full dataset and within the sub-datasets. The losses from these learning processes are combined to form the model's final optimization objective. This dual approach allows XCon to learn from both coarse-grained (overall dataset) and fine-grained (sub-dataset) features.
+
+Experiments and Results
+The effectiveness of XCon was evaluated on various datasets, including CIFAR-10/100, ImageNet-100, CUB-200, Stanford Cars, FGVC-Aircraft, and Oxford-IIIT Pet. These datasets encompass a wide range of classification challenges, from generic to fine-grained categories. XCon achieved state-of-the-art performance on several fine-grained category discovery benchmarks, demonstrating its capability to enhance classification performance significantly in challenging datasets.
+
+The implementation details include using a ViT-B-16 model initialized with DINO-pretrained parameters and fine-tuning the final transformer block. The model was trained with a combination of supervised and unsupervised contrastive losses, with the projections heads being discarded post-training.
+
+Ablation Studies
+Ablation studies were conducted to validate the effectiveness of various components of XCon, including the impact of the weight of fine-grained loss and the number of sub-datasets. These studies confirmed the robustness of the XCon approach across different configurations and provided insights into optimal settings for different datasets.
+
+Conclusion
+XCon introduces a novel method for fine-grained category discovery by leveraging expert sub-datasets and a combination of contrastive learning approaches. Its success across various benchmarks signifies a significant advancement in the field, offering a new direction for research in unsupervised and semi-supervised learning within fine-grained classification scenarios. The method's codebase has been made publicly available, encouraging further exploration and adaptation of this approach within the research community.
