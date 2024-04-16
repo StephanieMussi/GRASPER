@@ -127,7 +127,7 @@ def convert_content_gpt3(final_summary, openaikey):
     model="gpt-3.5-turbo",
     messages=[
         {"role": "system", "content": final_summary},
-        {"role": "user", "content": "Please convert the text into a presentation slides. Give the title and actual detailed content for each slide, in the format of \"Slide 1\nTitle: (title)\nContent: (content)\". Do not add other information."}
+        {"role": "user", "content": "Please convert the text into a presentation slides. Give the title and actual detailed bullet point content for each slide, in the format of \"Slide 1\nTitle: (title)\nContent: (content)\". Do not add other information."}
     ]
     )
     message = completion.choices[0].message.content
@@ -148,7 +148,7 @@ def convert_content_llama2(final_summary):
                 {"role": "system", "content": final_summary},
                 {
                     "role": "user",
-                    "content": "Please convert the text into presentation slides. Give the title and actual detailed content for each slide, in the format of 'Slide 1\nTitle: (title)\nContent: (content)'. Do not add other information."
+                    "content": "Please convert the text into presentation slides. Give the title and actual detailed bullet point content for each slide, in the format of 'Slide 1\nTitle: (title)\nContent: (content)'. Do not add other information."
                 }
             ]
         )
@@ -173,7 +173,7 @@ def convert_content_mistral(final_summary):
                 {"role": "system", "content": final_summary},
                 {
                     "role": "user",
-                    "content": "Please convert the text into a presentation slides. Give the title and actual detailed content for each slide, in the format of \"Slide 1\nTitle: (title)\nContent: (content)\". Do not add other information. "
+                    "content": "Please convert the text into a presentation slides. Give the title and actual detailed bullet point content for each slide, in the format of \"Slide 1\nTitle: (title)\nContent: (content)\". Do not add other information. "
                 }
             ]
         )
