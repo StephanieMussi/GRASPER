@@ -1,0 +1,47 @@
+ Slide 1
+Title: Introduction to ImageNet-1k as a Benchmark for DNN Training
+Content:
+- Large datasets and complex models improve deep learning applications' accuracy.
+- Extended training times pose a significant challenge, especially in fields like computational finance and autonomous driving.
+
+Slide 2
+Title: Scaling DNN Training for ImageNet
+Content:
+- Over the past two years, researchers have scaled DNN training for ImageNet.
+- Synchronous stochastic gradient descent (SGD) methods used.
+- Batch size increased from 1K on 128 processors to 32K using LARS algorithm.
+
+Slide 3
+Title: The LARS Algorithm and Its Impact
+Content:
+- LARS algorithm is a breakthrough in DNN training, enabling larger batch sizes and processor utilization.
+- Achieved training times of 11 minutes for AlexNet and 20 minutes for ResNet-50 on supercomputers.
+
+Slide 4
+Title: Comparative Performance Analysis
+Content:
+- LARS algorithm outperforms other state-of-the-art methods in terms of training speeds and accuracies.
+- For example, ResNet-50 with a top-1 test accuracy of 74.9% achieved in 14 minutes.
+
+Slide 5
+Title: Data Augmentation and Batch Size Efficiency
+Content:
+- Data augmentation maintains high accuracy levels during training.
+- Larger batch sizes reduce communication overhead, making the process more efficient.
+
+Slide 6
+Title: Challenges and Opportunities
+Content:
+- Ongoing challenges in scaling DNN training include developing more sophisticated data augmentation techniques and managing trade-offs between batch size, accuracy, and training time.
+
+Slide 7
+Title: Conclusion
+Content:
+- ImageNet remains a crucial benchmark for evaluating DNN models.
+- Advancements in reducing training times through scaling and algorithmic improvements have significant implications for various applications.
+
+Slide 8
+Title: Acknowledgements and References
+Content:
+- Gratitude to contributors and institutions that supported the research.
+- Comprehensive list of references documenting advancements and foundational technologies in DNN training.

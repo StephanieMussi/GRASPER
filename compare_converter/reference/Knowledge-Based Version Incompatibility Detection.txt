@@ -1,0 +1,52 @@
+Slide 1
+Title: Introduction to Version Incompatibility in DL Applications
+Content:
+Overview of version incompatibility issues in deep learning (DL) applications.
+Current solutions focus on detecting issues among Python packages based on dependencies.
+Introduction to utilizing Stack Overflow discussions to enhance detection capabilities beyond Python packages.
+
+Slide 2
+Title: Problem Statement and Approach
+Content:
+Version incompatibility as a significant barrier in DL model development and application.
+Description of challenges arising from complex dependencies within the DL development stack.
+Use of a Question-Answering (QA) approach to extract actionable knowledge from unstructured text.
+
+Slide 3
+Title: Methodology of the "Decide" System
+Content:
+Introduction of "Decide", leveraging the "UnifiedQA" model to interpret and extract compatibility information.
+Construction of a weighted knowledge graph representing compatibility relationships among software and hardware in DL projects.
+
+Slide 4
+Title: Implementation of the "Decide" System
+Content:
+Detection of version constraints and required components from DL project configuration scripts.
+Use of a knowledge graph constructed from Stack Overflow data to identify potential incompatibilities.
+Dynamic updates of the knowledge graph with new information to remain current with compatibility issues.
+
+Slide 5
+Title: Evaluation of the "Decide" System
+Content:
+Evaluation performed on ten popular DL projects.
+Detection of 65% of known version issues with 92% precision, outperforming existing techniques.
+Demonstration of the effectiveness of using crowd-sourced knowledge and advanced NLP techniques.
+
+Slide 6
+Title: Contributions of the Study
+Content:
+Novel approach for detecting version incompatibility using crowd-sourced knowledge.
+Application of QA models to extract structured knowledge from unstructured data.
+Creation of a publicly available large-scale knowledge graph of version compatibility relations.
+
+Slide 7
+Title: Future Work and Potential Enhancements
+Content:
+Suggestions for incorporating more diverse data sources and extending the approach to other programming environments.
+Potential for automating the repair of detected incompatibilities to enhance developer productivity and software robustness.
+
+Slide 8
+Title: Conclusion
+Content:
+Summary of the "Decide" system's contribution to advancing version incompatibility detection.
+Highlight on the use of real-world, crowd-sourced knowledge and advanced NLP techniques to solve critical software engineering problems.

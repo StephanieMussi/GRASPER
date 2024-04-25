@@ -1,0 +1,57 @@
+Slide 1
+Title: Introduction to Fine-grained Category Discovery
+Content:
+Overview of challenges in fine-grained category discovery, especially with unlabeled datasets.
+Emphasis on the need for models to leverage labeled data to interpret new, unlabeled data effectively.
+
+Slide 2
+Title: Problem Definition in Generalized Category Discovery
+Content:
+Definition of generalized category discovery (GCD) in fine-grained datasets.
+Distinction from semi-supervised learning due to the lack of comprehensive class labels in the training data.
+
+Slide 3
+Title: Proposed Method - XCon
+Content:
+Introduction to the two-phase learning process of XCon.
+Data Partitioning: Using k-means clustering on self-supervised representations to divide data into expert sub-datasets.
+Expert-Contrastive Learning: Employing contrastive learning within these sub-datasets to focus on class-relevant features.
+
+Slide 4
+Title: Key Contributions of XCon
+Content:
+Innovative Learning Strategy: Application of expert knowledge derived from clustering to fine-tune learning processes.
+Performance Enhancement: Demonstrated superior performance in fine-grained category discovery across benchmarks.
+Methodology Validation: Confirmation of approach effectiveness with state-of-the-art results.
+
+Slide 5
+Title: Experimental Setup of XCon
+Content:
+Detailed description of experiments conducted to validate XCon, including the use of datasets like CUB-200 and Stanford Cars.
+Metrics for evaluation, including clustering accuracy.
+Comparison of XCon's performance with existing methods.
+
+Slide 6
+Title: Results and Discussion
+Content:
+Significant improvements in clustering accuracy observed across various fine-grained datasets.
+Discussion on the implications of these results and the potential of integrating expert knowledge in learning models.
+
+Slide 7
+Title: Future Work and Research Directions
+Content:
+Suggestions for future research including the exploration of more diverse datasets.
+Integration of additional forms of self-supervision.
+Further refinement of the expert-contrastive learning framework for more complex category distinctions.
+
+Slide 8
+Title: Conclusion
+Content:
+Reiteration of the effectiveness of the XCon method in addressing fine-grained category discovery challenges.
+Highlights of scalability, accuracy, and efficiency benefits in leveraging unlabeled data.
+
+Slide 9
+Title: Acknowledgements
+Content:
+Recognition of the support received for computing resources.
+Acknowledgement of collaborations that facilitated the research.

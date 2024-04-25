@@ -1,0 +1,56 @@
+Slide 1
+Title: Introduction to Machine Programming
+Content:
+Definition of machine programming as the shift of software development responsibilities from humans to automated systems.
+Focus on enhancing efficiency, correctness, and security of software.
+Discussion on the increasing need for machine programming due to advancements in computational power and complexity.
+
+Slide 2
+Title: Why the Shift to Machine Programming Now?
+Content:
+Impact of recent technological advancements on the need for machine programming.
+Improvements in natural language processing, data availability from sources like GitHub.
+Increased computational power from cloud computing facilitating new programming support tools.
+
+Slide 3
+Title: The Three Pillars of Machine Programming
+Content:
+Intention: Capturing programmer's goals through advanced human-computer interfaces.
+Invention: Algorithm creation and refinement using machine learning.
+Adaptation: Autonomous software evolution to enhance performance and fix bugs.
+
+Slide 4
+Title: Detailed Analysis: Intention Pillar
+Content:
+Challenges in accurately capturing user intentions without deep programming knowledge.
+Use of machine learning to interpret less structured inputs like natural language.
+
+Slide 5
+Title: Detailed Analysis: Invention Pillar
+Content:
+Creation of new algorithms and improvement of existing ones through automation.
+Discussion on program synthesis for automatically generating programs that meet specified behaviors.
+
+Slide 6
+Title: Detailed Analysis: Adaptation Pillar
+Content:
+Software’s capability to autonomously evolve and adapt post-deployment.
+Optimization for new hardware configurations and autonomous error correction through updates.
+
+Slide 7
+Title: Interplay Among the Pillars
+Content:
+Explanation of how advancements in one pillar can influence and enhance the others.
+Example: Better intent capture leading to more effective algorithm creation and easier software adaptation.
+
+Slide 8
+Title: Conclusion and Future Vision
+Content:
+Prediction that integration of machine learning with programming will automate many aspects of software development.
+Envisioning a future where programming is more accessible to non-experts, allowing wider use of advanced computing capabilities.
+
+Slide 9
+Title: Impact of Data on Machine Programming
+Content:
+Role of high-quality, diverse datasets in training algorithms essential for machine programming.
+Need for comprehensive data to ensure the success and effectiveness of machine programming systems.

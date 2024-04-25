@@ -1,0 +1,29 @@
+Abstract
+The paper discusses the prevalent issue of version incompatibility in deep learning (DL) applications, which often hampers the reuse or reproduction of DL models. The authors propose a method leveraging discussions on Stack Overflow to detect version incompatibilities through a pre-trained Question-Answering (QA) model, which extracts version compatibility knowledge and forms it into a weighted knowledge graph. This approach shows promising results in detecting known version issues across various DL projects.
+
+Introduction
+Version incompatibility issues, especially undocumented ones, significantly hinder the development and application of DL models. Current solutions are limited to detecting issues among Python packages based on declared dependencies. To address this gap, this study utilizes data from Stack Overflow to enhance the detection capabilities beyond Python packages, including issues related to hardware drivers and operating systems.
+
+Problem Statement
+The authors formalize the challenge of version incompatibility detection, describing it as an issue arising from complex dependencies within the DL development stack. They focus on extracting actionable knowledge from unstructured text in Stack Overflow discussions using a QA approach, which helps identify both explicit and implicit dependency issues.
+
+Methodology
+The proposed solution, named "Decide", uses the QA model "UnifiedQA" to interpret the text and extract compatibility information from discussions on Stack Overflow. The extracted data is then used to construct a knowledge graph that represents compatibility relationships among various software and hardware components used in DL projects.
+
+Implementation
+"Decide" identifies version constraints and required components from the configuration scripts of DL projects. It then matches these requirements against a knowledge graph constructed from Stack Overflow data to detect any potential incompatibilities. The system dynamically updates its knowledge graph with new information from ongoing discussions to stay current with the latest compatibility issues.
+
+Evaluation
+The system was evaluated on ten popular DL projects, showing that it could detect 65% of known version issues with 92% precision, significantly outperforming existing techniques. The effectiveness of the "Decide" system demonstrates the viability of using crowd-sourced knowledge and advanced NLP techniques for solving complex software engineering problems.
+
+Contributions
+The study contributes to the field by:
+
+Proposing a novel approach to detect version incompatibility using crowd-sourced knowledge.
+Demonstrating the application of a QA model for extracting structured knowledge from unstructured data.
+Creating a publicly available large-scale knowledge graph of version compatibility relations.
+Future Work
+The paper suggests potential improvements and expansions, such as incorporating more diverse data sources and extending the approach to other programming environments and ecosystems. Additionally, automating the repair of detected incompatibilities could further enhance developer productivity and software robustness.
+
+Conclusion
+The "Decide" system significantly advances the field of version incompatibility detection by utilizing real-world, crowd-sourced knowledge and applying advanced NLP techniques to address a critical challenge in the deployment and development of DL applications.

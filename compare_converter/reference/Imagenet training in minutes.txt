@@ -1,0 +1,54 @@
+Slide 1
+Title: Introduction to ImageNet-1k Training Challenges
+Content:
+Importance of ImageNet-1k as a benchmark for deep neural network (DNN) model evaluation.
+Overview of challenges in reducing training time for DNNs.
+Introduction of Layer-wise Adaptive Rate Scaling (LARS) algorithm to scale batch sizes and processor counts efficiently.
+
+Slide 2
+Title: Importance of Large Datasets and Models
+Content:
+Role of large datasets and complex models in enhancing the accuracy of deep learning applications.
+Impact of prolonged training times on fields like computational finance and autonomous driving.
+
+Slide 3
+Title: Scaling DNN Training with LARS
+Content:
+Efforts to scale DNN training on ImageNet using synchronous stochastic gradient descent (SGD).
+Scaling batch size from 1K on 128 processors to 8K on 256 processors, then to 32K using LARS, maintaining accuracy.
+
+Slide 4
+Title: Breakthroughs with LARS Algorithm
+Content:
+LARS algorithm enables larger batch sizes and higher processor utilization.
+Achievements: 11 minutes training time for AlexNet and 20 minutes for ResNet-50 on supercomputers with competitive accuracy.
+
+Slide 5
+Title: Comparative Performance Analysis
+Content:
+Comparison of training speeds and accuracies with LARS algorithm versus other methods.
+Example: ResNet-50 training reduced to 14 minutes with a top-1 test accuracy of 74.9%.
+
+Slide 6
+Title: Data Augmentation and Efficiency
+Content:
+Role of data augmentation in maintaining accuracy with large batch sizes.
+Benefits of large batch sizes in reducing communication overhead and enhancing efficiency.
+
+Slide 7
+Title: Challenges and Future Opportunities
+Content:
+Ongoing challenges in scaling DNN training.
+Need for sophisticated data augmentation techniques and management of trade-offs between batch size, accuracy, and training time.
+
+Slide 8
+Title: Concluding Remarks on DNN Training Advancements
+Content:
+Reaffirmation of the importance of ImageNet as a benchmark.
+Summary of advancements in reducing training times through algorithmic improvements and scaling.
+
+Slide 9
+Title: Acknowledgements and References
+Content:
+Acknowledgments to contributors and supporting institutions.
+Comprehensive list of references documenting the advancements and foundational technologies in DNN training.

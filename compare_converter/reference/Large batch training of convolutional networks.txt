@@ -1,0 +1,57 @@
+Slide 1
+Title: Introduction to Large Batch Training Challenges
+Content:
+Review of conventional strategies using increased computational power to speed up training of large CNNs.
+Discussion on the limitations of increasing batch sizes, typically resulting in reduced accuracy.
+Critique of existing methods like adjusting learning rates as insufficient for managing large batch training.
+
+Slide 2
+Title: Background on CNN Training Approaches
+Content:
+Overview of training CNNs using Stochastic Gradient Descent (SGD).
+Challenges introduced by large batch sizes.
+Analysis of traditional solutions such as hyperparameter adjustments, focusing on learning rates and momentum.
+
+Slide 3
+Title: Problems with Current Large Batch Training Methods
+Content:
+Criticism of linear learning rate scaling method.
+Highlighting the method’s failure to prevent accuracy loss and model divergence, especially in early training phases.
+Necessity for a sophisticated approach that adaptively adjusts learning rates across network layers.
+
+Slide 4
+Title: Proposal of the LARS Algorithm
+Content:
+Introduction of the Layer-wise Adaptive Rate Scaling (LARS) algorithm to address identified training issues.
+Explanation of LARS’s mechanism: adjusting learning rates at the layer level based on weight norms to gradient norms ratios.
+
+Slide 5
+Title: Experimental Setup and Methodology
+Content:
+Description of the experimental procedures to test LARS, including network architectures like Alexnet and Resnet-50.
+Configurations used for batch sizes and learning rates.
+Implementation details of LARS adjustments and metrics for evaluating effectiveness.
+
+Slide 6
+Title: Results of LARS Algorithm Implementation
+Content:
+Findings showing LARS’s ability to use larger batch sizes without compromising accuracy.
+Specific results from training Alexnet with a batch size of 8K and Resnet-50 with 32K, maintaining accuracy levels.
+
+Slide 7
+Title: Analysis and Discussion
+Content:
+Performance analysis of LARS compared to traditional training methods.
+Discussion on how layer-wise adaptive learning rates contribute to more stable and efficient training across different neural network architectures.
+
+Slide 8
+Title: Conclusions and Future Work
+Content:
+Reiteration of the effectiveness of the LARS algorithm.
+Suggestions for future research directions, including application of LARS to other neural network types and further optimizations in large batch training.
+
+Slide 9
+Title: Contributions of the Study
+Content:
+Summary of contributions to machine learning, addressing accuracy degradation in large batch training of CNNs.
+Emphasis on the significance of the LARS algorithm as a major advancement for training large-scale neural networks.

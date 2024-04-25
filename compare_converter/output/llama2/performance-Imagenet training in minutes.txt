@@ -1,0 +1,10 @@
+Time used: 90.81315301900031
+
+Number of words: 304
+
+ROUGE Score: {'rouge1': 0.6656, 'rouge2': 0.36276083467094705, 'rougeL': 0.4608, 'rougeLsum': 0.6592}
+
+BLEU Score: {'bleu': 0.2591442195943661, 'precisions': [0.652046783625731, 0.375366568914956, 0.19705882352941176, 0.12094395280235988], 'brevity_penalty': 0.9376978669003745, 'length_ratio': 0.9395604395604396, 'translation_length': 342, 'reference_length': 364}
+
+METEOR Score: {'meteor': 0.4515325634772134}
+

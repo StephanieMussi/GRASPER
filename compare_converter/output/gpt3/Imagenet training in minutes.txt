@@ -1,0 +1,41 @@
+Slide 1
+Title: Introduction
+Content: - Importance of large datasets and complex models in deep learning
+- Challenge of extended training times in improving accuracy
+- Application areas requiring rapid training of large datasets
+
+Slide 2
+Title: Scaling DNN Training
+Content: - Advancements in synchronous SGD methods for ImageNet training
+- Scaling batch size from 1K on 128 processors to 32K
+- Maintaining accuracy over fixed epochs
+
+Slide 3
+Title: LARS Algorithm and Its Impact
+Content: - Introduction of Layer-wise Adaptive Rate Scaling algorithm
+- Enabling larger batch sizes and increased processor utilization
+- Achieving training times of 11 minutes for AlexNet and 20 minutes for ResNet-50 on supercomputers
+
+Slide 4
+Title: Comparative Performance Analysis
+Content: - Comparison of training speeds and accuracies with LARS algorithm
+- Reducing ResNet-50 training time to 14 minutes with top-1 test accuracy of 74.9%
+- Surpassing previous benchmarks
+
+Slide 5
+Title: Data Augmentation and Batch Size Efficiency
+Content: - Role of data augmentation in maintaining high accuracy
+- Impact of large batch sizes on training dynamics
+- Efficiency gains in reducing communication overhead
+
+Slide 6
+Title: Challenges and Opportunities
+Content: - Ongoing challenges in further scaling DNN training
+- Need for advanced data augmentation techniques
+- Managing trade-offs between batch size, accuracy, and training time
+
+Slide 7
+Title: Conclusion
+Content: - Reaffirming ImageNet's importance as a benchmark
+- Summary of advances in reducing training times through scaling and algorithmic improvements
+- Potential impact on applications requiring rapid processing of large datasets
