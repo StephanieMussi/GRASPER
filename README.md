@@ -11,6 +11,10 @@ In Linux terminal:
 `source venv/bin/activate`
 ## 3. Install dependencies
 `pip install -r requirements.txt`
+
+Install tkinter for file selector:
+
+`sudo apt install python3-tk -y`
 ## 4. Run the pdf to ppt generator
 `python pdf_ppt_generator.py --summarizer=<summarizer> --converter=<converter> (--openaikey=<openaikey>)`
 
