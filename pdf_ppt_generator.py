@@ -81,7 +81,7 @@ def chunk_text_into_tokens(text, tokenizer, max_tokens=1024):
 """
 With specified maximum summary length, calculate the min and max length for each chunk summary.
 """
-def get_max_min_sum_length(num_chunk, max_text_length=4096):
+def get_max_min_sum_length(num_chunk, max_text_length=3996):
     max_sum_length = math.floor(max_text_length / num_chunk)
     min_sum_length = math.floor(0.5 * max_sum_length)
     return max_sum_length, min_sum_length
@@ -107,7 +107,7 @@ def summarize_chunks_bart(token_chunks, max_sum_length, min_sum_length, tokenize
         summaries.append(summary)
     return summaries
 
-def summarize_text_bart(long_text, max_text_length=4096):
+def summarize_text_bart(long_text, max_text_length=3996):
     tokenizer_bart = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
     model_bart = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
     text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_bart)
@@ -130,7 +130,7 @@ def summarize_chunks_T5(chunks, max_sum_length, min_sum_length, tokenizer, model
         summaries.append(summary)
     return summaries
 
-def summarize_text_T5(long_text, max_text_length=4096):
+def summarize_text_T5(long_text, max_text_length=3996):
     tokenizer_T5= T5Tokenizer.from_pretrained("t5-base", legacy=False) 
     model_T5 = T5ForConditionalGeneration.from_pretrained("t5-base")
     text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_T5)
@@ -144,36 +144,30 @@ def summarize_text_T5(long_text, max_text_length=4096):
 Summarize text with LlaMa2 model
 """
 def summarize_chunks_llama2(token_chunks, max_sum_length, min_sum_length):
-    original_stderr = sys.stderr
-    sys.stderr = open(os.devnull, 'w')
-    try:
-        summaries = []
-        for chunk in token_chunks:
-            chunk_text = tokenizer.convert_tokens_to_string(chunk)
-            llm = Llama(
-                model_path="./models/llama-2-7b-chat.Q4_K_M.gguf",
-                chat_format="llama-2", 
-                n_ctx=1024
-            )
-            completion_llama2 = llm.create_chat_completion(
-                messages=[
-                    {"role": "system", "content": chunk_text},
-                    {
-                        "role": "user",
-                        "content": "Please summarize the text between {} and {} tokens.".format(min_sum_length, max_sum_length)
-                    }
-                ],
-                max_tokens=max_sum_length
-            )
-            message_llama2 = completion_llama2['choices'][0]['message']['content']
-            summaries.append(message_llama2)
-    finally:
-        sys.stderr.close()
-        sys.stderr = original_stderr
+    summaries = []
+    for chunk in token_chunks:
+        chunk_text = tokenizer.convert_tokens_to_string(chunk)
+        llm = Llama(
+            model_path="./models/llama-2-7b-chat.Q4_K_M.gguf",
+            chat_format="llama-2", 
+            n_ctx=4096
+        )
+        completion_llama2 = llm.create_chat_completion(
+            messages=[
+                {"role": "system", "content": chunk_text},
+                {
+                    "role": "user",
+                    "content": "Please summarize the text between {} and {} tokens.".format(min_sum_length, max_sum_length)
+                }
+            ],
+            max_tokens=max_sum_length
+        )
+        message_llama2 = completion_llama2['choices'][0]['message']['content']
+        summaries.append(message_llama2)
     return summaries
 
 def summarize_text_llama2(long_text):
-    text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_llama2)
+    text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_llama2, 3996)
     max_sum_length, min_sum_length = get_max_min_sum_length(num_chunk)
     chunk_summaries_llama2 = summarize_chunks_llama2(text_chunks, max_sum_length, min_sum_length)
     final_summary_llama2 = concatenate_summaries(chunk_summaries_llama2)
@@ -184,36 +178,30 @@ def summarize_text_llama2(long_text):
 Summarize text with Mistral model
 """
 def summarize_chunks_mistral(token_chunks, max_sum_length, min_sum_length):
-    original_stderr = sys.stderr
-    sys.stderr = open(os.devnull, 'w')
-    try:
-        summaries = []
-        for chunk in token_chunks:
-            chunk_text = tokenizer.convert_tokens_to_string(chunk)
-            mistral = Llama(
-                model_path="./models/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-                chat_format="llama-2", 
-                n_ctx=1024
-            )
-            completion_mistral = mistral.create_chat_completion(
-                messages = [
-                    {"role": "system", "content": chunk_text},
-                    {
-                        "role": "user",
-                        "content": "Please summarize the text between {} and {} tokens.".format(min_sum_length, max_sum_length)
-                    }
-                ],
-                max_tokens=max_sum_length
-            )
-            message_mistral = completion_mistral['choices'][0]['message']['content']
-            summaries.append(message_mistral)
-    finally:
-        sys.stderr.close()
-        sys.stderr = original_stderr
+    summaries = []
+    for chunk in token_chunks:
+        chunk_text = tokenizer.convert_tokens_to_string(chunk)
+        mistral = Llama(
+            model_path="./models/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+            chat_format="llama-2", 
+            n_ctx=4096
+        )
+        completion_mistral = mistral.create_chat_completion(
+            messages = [
+                {"role": "system", "content": chunk_text},
+                {
+                    "role": "user",
+                    "content": "Please summarize the text between {} and {} tokens.".format(min_sum_length, max_sum_length)
+                }
+            ],
+            max_tokens=max_sum_length
+        )
+        message_mistral = completion_mistral['choices'][0]['message']['content']
+        summaries.append(message_mistral)
     return summaries
 
 def summarize_text_mistral(long_text):
-    text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_mistral)
+    text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_mistral, 3996)
     max_sum_length, min_sum_length = get_max_min_sum_length(num_chunk)
     chunk_summaries_mistral = summarize_chunks_mistral(text_chunks, max_sum_length, min_sum_length)
     final_summary_mistral = concatenate_summaries(chunk_summaries_mistral)
@@ -224,14 +212,20 @@ def summarize_text_mistral(long_text):
 Call corresponding summarizer function based on argument.
 """
 def summarize_text(long_text, summarizer_type):
-    if summarizer_type == 'bart':
-        return summarize_text_bart(long_text)
-    elif summarizer_type == 't5':
-        return summarize_text_T5(long_text)
-    elif summarizer_type == 'llama2':
-        return summarize_text_llama2(long_text)
-    elif summarizer_type == 'mistral':
-        return summarize_text_mistral(long_text)
+    original_stderr = sys.stderr
+    sys.stderr = open(os.devnull, 'w')
+    try:
+        if summarizer_type == 'bart':
+            return summarize_text_bart(long_text)
+        elif summarizer_type == 't5':
+            return summarize_text_T5(long_text)
+        elif summarizer_type == 'llama2':
+            return summarize_text_llama2(long_text)
+        elif summarizer_type == 'mistral':
+            return summarize_text_mistral(long_text)
+    finally:
+        sys.stderr.close()
+        sys.stderr = original_stderr
 
 
 """
@@ -254,27 +248,21 @@ def convert_content_gpt3(final_summary, openaikey):
 Convert summary to slides content with LlaMa2
 """
 def convert_content_llama2(final_summary):
-    original_stderr = sys.stderr
-    sys.stderr = open(os.devnull, 'w')
-    try:
-        llm = Llama(
-            model_path="./models/llama-2-7b-chat.Q4_K_M.gguf",
-            chat_format="llama-2", 
-            n_ctx=4096
-        )
-        completion_llama2 = llm.create_chat_completion(
-            messages=[
-                {"role": "system", "content": final_summary},
-                {
-                    "role": "user",
-                    "content": "Please convert the text into presentation slides. Give the title and actual detailed bullet point content for each slide, in the format of 'Slide 1\nTitle: (title)\nContent: (content)'. Do not add other information."
-                }
-            ]
-        )
-        message_llama2 = completion_llama2['choices'][0]['message']['content']
-    finally:
-        sys.stderr.close()
-        sys.stderr = original_stderr
+    llm = Llama(
+        model_path="./models/llama-2-7b-chat.Q4_K_M.gguf",
+        chat_format="llama-2", 
+        n_ctx=4096
+    )
+    completion_llama2 = llm.create_chat_completion(
+        messages=[
+            {"role": "system", "content": final_summary},
+            {
+                "role": "user",
+                "content": "Please convert the text into presentation slides. Give the title and actual detailed bullet point content for each slide, in the format of 'Slide 1\nTitle: (title)\nContent: (content)'. Do not add other information."
+            }
+        ]
+    )
+    message_llama2 = completion_llama2['choices'][0]['message']['content']
     return message_llama2
 
 
@@ -282,27 +270,21 @@ def convert_content_llama2(final_summary):
 Convert summary to slides content with Mistral
 """
 def convert_content_mistral(final_summary):
-    original_stderr = sys.stderr
-    sys.stderr = open(os.devnull, 'w')
-    try:
-        mistral = Llama(
-            model_path="./models/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-            chat_format="llama-2", 
-            n_ctx=4096
-        )
-        completion_mistral = mistral.create_chat_completion(
-            messages = [
-                {"role": "system", "content": final_summary},
-                {
-                    "role": "user",
-                    "content": "Please convert the text into a presentation slides. Give the title and actual detailed bullet point content for each slide, in the format of \"Slide 1\nTitle: (title)\nContent: (content)\". Do not add other information. "
-                }
-            ]
-        )
-        message_mistral = completion_mistral['choices'][0]['message']['content']
-    finally:
-        sys.stderr.close()
-        sys.stderr = original_stderr
+    mistral = Llama(
+        model_path="./models/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+        chat_format="llama-2", 
+        n_ctx=4096
+    )
+    completion_mistral = mistral.create_chat_completion(
+        messages = [
+            {"role": "system", "content": final_summary},
+            {
+                "role": "user",
+                "content": "Please convert the text into a presentation slides. Give the title and actual detailed bullet point content for each slide, in the format of \"Slide 1\nTitle: (title)\nContent: (content)\". Do not add other information. "
+            }
+        ]
+    )
+    message_mistral = completion_mistral['choices'][0]['message']['content']
     return message_mistral
 
 
@@ -310,12 +292,18 @@ def convert_content_mistral(final_summary):
 Call corresponding converter function based on argument.
 """
 def convert_content(final_summary, converter_type, openaikey=None):
-    if converter_type == 'gpt3':
-        return convert_content_gpt3(final_summary, openaikey)
-    elif converter_type == 'llama2':
-        return convert_content_llama2(final_summary)
-    elif converter_type == 'mistral':
-        return convert_content_mistral(final_summary)
+    original_stderr = sys.stderr
+    sys.stderr = open(os.devnull, 'w')
+    try:
+        if converter_type == 'gpt3':
+            return convert_content_gpt3(final_summary, openaikey)
+        elif converter_type == 'llama2':
+            return convert_content_llama2(final_summary)
+        elif converter_type == 'mistral':
+            return convert_content_mistral(final_summary)
+    finally:
+        sys.stderr.close()
+        sys.stderr = original_stderr
 
 
 """
@@ -475,7 +463,7 @@ def main():
 
     """Step4. Generate presentation slides from content"""
     template_path = './source/template.pptx'
-    save_path = './output/'+paper_title+'.pptx'
+    save_path = './output/'+args.summarizer+' '+args.converter+'/'+paper_title+'.pptx'
     global generating
     generating = True
     anim_thread = threading.Thread(target=animate_generation)
