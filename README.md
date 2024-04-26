@@ -12,7 +12,7 @@ Link to demo video on YouTube:
 #### 3. Run the container
 
 `docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --name pdf-ppt-generator symu/pdf-ppt-generator bash`
-#### 4. Run the pdf to ppt generator inside the container
+#### 4. Run the pdf ppt generator inside the container
 `python3 pdf_ppt_generator.py --summarizer=<summarizer> --converter=<converter> (--openaikey=<openaikey>)`
 
 Parameters:
@@ -37,10 +37,16 @@ And the output will be found in output/bart llama2/ folder
 
 `cd pdf_ppt_generator`
 
-#### 2. Download LlaMa2 and Mistral GGUF models, and put them in /models folder
-LlaMa2: https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/blob/main/llama-2-7b-chat.Q4_K_M.gguf
+#### 2. Download LlaMa2 and Mistral GGUF models
 
-Mistral: https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/blob/main/mistral-7b-instruct-v0.2.Q4_K_M.gguf
+`sudo apt update && sudo apt install wget`
+
+`mkdir -p /models`
+
+`wget -O /models/llama-2-7b-chat.Q4_K_M.gguf "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/blob/main/llama-2-7b-chat.Q4_K_M.gguf?raw=true"`
+
+`wget -O /models/mistral-7b-instruct-v0.2.Q4_K_M.gguf "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/blob/main/mistral-7b-instruct-v0.2.Q4_K_M.gguf?raw=true"`
+
 #### 3. Create and activate virtual environment
 
 `python3 -m venv venv`
@@ -50,7 +56,7 @@ Mistral: https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/blob/main
 `pip install -r requirements.txt`
 
 `sudo apt-get update && sudo apt-get install -y gcc g++ python3-tk`
-#### 5. Run the pdf to ppt generator
+#### 5. Run the pdf ppt generator
 `python3 pdf_ppt_generator.py --summarizer=<summarizer> --converter=<converter> (--openaikey=<openaikey>)`
 
 Parameters:
