@@ -1,0 +1,25 @@
+ This technical report discusses the challenges of training large Convolutional Neural Networks (CNN) using large batches and proposes a new training algorithm called Layer-wise Adaptive Rate Scaling (LARS). The authors argue that increasing the batch size while keeping the same  Title: Layer-wise Adaptive Rate Scaling (LARS) for Training Deep Neural Networks with Large Batches
+
+Introduction:
+The text discusses the challenges of training deep neural networks with large batches using traditional methods, which often lead to divergence or suboptimal solutions. The authors propose an algorithm called Layer-wise Adaptive Rate Scaling (LARS) to address these optimization difficulties and enable scaling up Alexnet and Resnet-50 to batch sizes of 32K.
+
+Background:
+Traditional methods for training deep neural networks with large batches involve using large learning rates, which can lead to divergence during the initial phase. The authors discuss the challenges of this approach and propose LARS as a solution.
+
+Analysis of Alexnet Training with Large Batches:
+The text presents an analysis of Alexnet training with large batches and the difficulties encountered when using traditional methods. It is shown that even with learning rate warm-up, these methods do not reach baseline accuracy when the batch size is very large.
+
+Layer-wise Adaptive Rate Scaling (LARS):
+The authors propose LARS as a solution to the optimization difficulties encountered during training deep neural networks with large batches. This algorithm adapts the learning rate for each layer, allowing for more effective and stable training. The text discusses the implementation of LARS and its benefits in terms of accuracy and convergence.
+
+Training with LARS:
+The authors present the results of training Alexnet and Alexnet-BN using LARS, showing that they were able to extend scaling to batch sizes of 32K while maintaining almost the same accuracy as the baseline. They also discuss the retraining of Resnet-50 using LARS and compare it to a baseline with a lower top-1 accuracy.
+
+Large Batch vs Number of Steps:
+The text argues that when the batch is very large, the stochastic gradients become close to true gradients, making increasing the batch size less beneficial compared to smaller batches in terms of additional gradient information. The authors present an analysis of Alexnet-BN's accuracy as a function of training duration for a large batch size.
+
+Conclusion:
+The text concludes that LARS is an effective solution for training deep neural networks with large batches, enabling scaling up to 32K while maintaining accuracy and addressing optimization difficulties encountered during the initial phase. The authors also discuss the importance of large batches in deep learning and the potential challenges of training beyond 32K without accuracy loss.
+
+References:
+The text provides a list of references for further reading on related topics, including papers on distributed synchronous SGD, power-aware distributed deep learning, and other relevant works on deep learning optimization.

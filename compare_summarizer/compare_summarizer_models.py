@@ -233,22 +233,22 @@ def summarize_text_mistral(long_text):
 Call corresponding summarizer function based on argument.
 """
 def summarize_text_get_performance(long_text, gpt_summary, paper_title):
-    # # bart
-    # summary_bart, time_bart, number_of_tokens_bart = summarize_text_bart(long_text)
-    # score_bart = get_score(gpt_summary, summary_bart)
-    # performance_bart = time_bart + number_of_tokens_bart + score_bart
-    # with open("output/bart/"+paper_title+".txt", "w", encoding="utf-8") as file:
-    #     file.write(summary_bart)
-    # with open("output/bart/performance-"+paper_title+".txt", "w", encoding="utf-8") as file:
-    #     file.write(performance_bart)
-    # # t5
-    # summary_t5, time_t5, number_of_tokens_t5 =  summarize_text_T5(long_text)
-    # score_t5 = get_score(gpt_summary, summary_t5)
-    # performance_t5 = time_t5 + number_of_tokens_t5 + score_t5
-    # with open("output/t5/"+paper_title+".txt", "w", encoding="utf-8") as file:
-    #     file.write(summary_t5)
-    # with open("output/t5/performance-"+paper_title+".txt", "w", encoding="utf-8") as file:
-    #     file.write(performance_t5)
+    # bart
+    summary_bart, time_bart, number_of_tokens_bart = summarize_text_bart(long_text)
+    score_bart = get_score(gpt_summary, summary_bart)
+    performance_bart = time_bart + number_of_tokens_bart + score_bart
+    with open("output/bart/"+paper_title+".txt", "w", encoding="utf-8") as file:
+        file.write(summary_bart)
+    with open("output/bart/performance-"+paper_title+".txt", "w", encoding="utf-8") as file:
+        file.write(performance_bart)
+    # t5
+    summary_t5, time_t5, number_of_tokens_t5 =  summarize_text_T5(long_text)
+    score_t5 = get_score(gpt_summary, summary_t5)
+    performance_t5 = time_t5 + number_of_tokens_t5 + score_t5
+    with open("output/t5/"+paper_title+".txt", "w", encoding="utf-8") as file:
+        file.write(summary_t5)
+    with open("output/t5/performance-"+paper_title+".txt", "w", encoding="utf-8") as file:
+        file.write(performance_t5)
     # llama2
     summary_llama2, time_llama2, number_of_tokens_llama2 =  summarize_text_llama2(long_text)
     score_llama2 = get_score(gpt_summary, summary_llama2)

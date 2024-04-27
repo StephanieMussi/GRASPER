@@ -1,10 +1,10 @@
-Time used: 161.10606385600113
+Time used: 134.86856984900078
 
-Number of tokens: 2145
+Number of tokens: 1913
 
 ROUGE Score: {'rouge1': 0.3853503184713376, 'rouge2': 0.09250398724082932, 'rougeL': 0.14808917197452232, 'rougeLsum': 0.30254777070063693}
 
-BLEU Score: {'bleu': 0.03716487966882964, 'precisions': [0.24198250728862974, 0.05933852140077821, 0.019474196689386564, 0.00682261208576998], 'brevity_penalty': 1.0, 'length_ratio': 2.170886075949367, 'translation_length': 1029, 'reference_length': 474}
+BLEU Score: {'bleu': 0.037530136910327486, 'precisions': [0.24435721295387636, 0.05992141453831041, 0.01966568338249754, 0.006889763779527559], 'brevity_penalty': 1.0, 'length_ratio': 2.149789029535865, 'translation_length': 1019, 'reference_length': 474}
 
-METEOR Score: {'meteor': 0.31609777210460355}
+METEOR Score: {'meteor': 0.31652092842602875}
 

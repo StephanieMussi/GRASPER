@@ -1,0 +1,15 @@
+  The authors of this technical report investigate the challenges of training large convolutional neural networks (CNNs) using data parallelism and stochastic gradient descent (SGD). They observe that as the batch size increases, the accuracy of the model decreases, and they propose a new training algorithm   Sure, here's a summary of the text in between 1000 and 1998 tokens:
+Introduction:
+* The authors propose a new algorithm for scaling up training of convolutional neural networks (CNNs) using large batches.
+Background:
+* Large batches are key for scaling up CNN training, but existing approaches lead to divergence during the initial phase.
+Analysis of Alexnet training with large batch:
+* The authors analyze the training of Alexnet with large batches and find that the accuracy decreases significantly after the initial warm-up period.
+Layer-wise Adaptive Rate Scaling (LARS):
+* The authors propose a new algorithm called Layer-wise Adaptive Rate Scaling (LARS) to overcome the difficulty of large batch training.
+Training with LARS:
+* The authors train several CNN models using LARS and find that it can scale up the training of CNNs to larger batch sizes without affecting the accuracy.
+Large Batch vs Number of Steps:
+* The authors show that increasing the number of steps during training can recover the accuracy lost due to large batch size.
+Conclusion:
+* The authors conclude that LARS is a promising approach for scaling up CNN training using large batches without sacrificing accuracy.

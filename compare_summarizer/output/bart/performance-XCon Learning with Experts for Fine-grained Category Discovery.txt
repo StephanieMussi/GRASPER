@@ -1,0 +1,10 @@
+Time used: 147.75937749497825
+
+Number of tokens: 2116
+
+ROUGE Score: {'rouge1': 0.32838874680306906, 'rouge2': 0.10138248847926266, 'rougeL': 0.13503836317135548, 'rougeLsum': 0.2608695652173913}
+
+BLEU Score: {'bleu': 0.028919977066188436, 'precisions': [0.19214501510574017, 0.05259975816203144, 0.012704174228675136, 0.005447941888619854], 'brevity_penalty': 1.0, 'length_ratio': 3.336693548387097, 'translation_length': 1655, 'reference_length': 496}
+
+METEOR Score: {'meteor': 0.3191407310013627}
+
