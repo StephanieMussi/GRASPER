@@ -1,0 +1,43 @@
+ Slide 1
+Title: Introduction to Version Incompatibility in Deep Learning
+Content:
+- Version incompatibility issues hinder DL model development and application
+- Current solutions limited to Python packages and declared dependencies
+- Proposed study utilizes Stack Overflow data for enhanced detection capabilities
+
+Slide 2
+Title: Problem Statement: Version Incompatibility Detection Challenge
+Content:
+- Complex dependencies within DL development stack
+- Extracting actionable knowledge from unstructured text on Stack Overflow
+- Identifying explicit and implicit dependency issues
+
+Slide 3
+Title: Methodology: The "Decide" System
+Content:
+- Utilizes QA model UnifiedQA to interpret Stack Overflow texts
+- Constructs a knowledge graph of compatibility relationships
+- Identifies version constraints and required components from DL projects
+- Matches requirements against the knowledge graph for incompatibility detection
+- Dynamically updates the knowledge graph with new information
+
+Slide 4
+Title: Evaluation Results
+Content:
+- Detected 65% of known version issues with 92% precision
+- Significantly outperforms existing techniques
+- Demonstrates the effectiveness of using crowd-sourced knowledge and NLP techniques
+
+Slide 5
+Title: Contributions of the Study
+Content:
+- Novel approach to detect version incompatibility using crowd-sourced knowledge
+- Application of a QA model for extracting structured knowledge from unstructured data
+- Creation of a large-scale publicly available knowledge graph of version compatibility relations
+
+Slide 6
+Title: Future Work
+Content:
+- Incorporating more diverse data sources
+- Extending the approach to other programming environments and ecosystems
+- Automating the repair of detected incompatibilities for enhanced productivity and software robustness

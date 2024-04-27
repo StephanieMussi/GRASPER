@@ -1,0 +1,47 @@
+Slide 1
+Title: Addressing Version Incompatibility in Deep Learning Applications
+Content: - Version incompatibility issues in DL
+          - Limitations of current solutions
+          - Leveraging Stack Overflow for insights
+
+Slide 2
+Title: Problem Statement
+Content: - Complex dependencies in DL stack
+          - Detection of implicit version issues
+          - Need for enhanced detection methods
+
+Slide 3
+Title: Methodology
+Content: - Utilizing QA model "UnifiedQA"
+          - Extracting compatibility info from Stack Overflow
+          - Constructing a knowledge graph
+
+Slide 4
+Title: Implementation
+Content: - Identifying version constraints in DL projects
+          - Matching requirements with knowledge graph
+          - Dynamic updating of knowledge graph
+
+Slide 5
+Title: Evaluation
+Content: - Performance on popular DL projects
+          - Detection rate and precision
+          - Comparison with existing techniques
+
+Slide 6
+Title: Contributions
+Content: - Novel approach using crowd-sourced knowledge
+          - Application of QA model for structured data extraction
+          - Creation of a large-scale knowledge graph
+
+Slide 7
+Title: Future Work
+Content: - Incorporating diverse data sources
+          - Extending approach to other ecosystems
+          - Automation of incompatibility repair
+
+Slide 8
+Title: Conclusion
+Content: - Advancements in version incompatibility detection
+          - Utilization of real-world knowledge and NLP
+          - Critical impact on DL deployment and development

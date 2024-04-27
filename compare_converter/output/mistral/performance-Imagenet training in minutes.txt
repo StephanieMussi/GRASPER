@@ -1,10 +1,10 @@
-Time used: 88.25744464499803
+Time used: 80.26758740498917
 
-Number of words: 287
+Number of words: 282
 
-ROUGE Score: {'rouge1': 0.7209302325581396, 'rouge2': 0.49, 'rougeL': 0.5980066445182725, 'rougeLsum': 0.7109634551495017}
+ROUGE Score: {'rouge1': 0.7080536912751677, 'rouge2': 0.46801346801346805, 'rougeL': 0.5838926174496644, 'rougeLsum': 0.7013422818791946}
 
-BLEU Score: {'bleu': 0.38225812079741495, 'precisions': [0.7325227963525835, 0.49390243902439024, 0.3547400611620795, 0.254601226993865], 'brevity_penalty': 0.8990802535245078, 'length_ratio': 0.9038461538461539, 'translation_length': 329, 'reference_length': 364}
+BLEU Score: {'bleu': 0.3622410772193153, 'precisions': [0.7323076923076923, 0.48148148148148145, 0.33436532507739936, 0.2360248447204969], 'brevity_penalty': 0.8869204367171576, 'length_ratio': 0.8928571428571429, 'translation_length': 325, 'reference_length': 364}
 
-METEOR Score: {'meteor': 0.6379431119427181}
+METEOR Score: {'meteor': 0.6226673586237879}
 

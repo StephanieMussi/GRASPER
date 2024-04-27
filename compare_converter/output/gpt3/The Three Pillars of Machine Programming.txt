@@ -1,0 +1,49 @@
+Slide 1
+Title: Introduction
+Content: - Definition of machine programming
+- Focus on efficiency, correctness, and security in software
+- Discussion on the need for automation in software development
+
+Slide 2
+Title: Why Now?
+Content: - Technological advancements driving machine programming
+- Improved natural language processing capabilities
+- Increased data availability from platforms like GitHub
+- Enhanced computational power from cloud computing
+
+Slide 3
+Title: The Three Pillars
+Content: - Intention: Understanding user goals through human-computer interaction
+- Invention: Creation and refinement of algorithms using machine learning
+- Adaptation: Machine learning for software evolution and optimization
+
+Slide 4
+Title: Intention
+Content: - Challenges in capturing user intent accurately
+- Utilizing machine learning for interpreting natural language inputs
+
+Slide 5
+Title: Invention
+Content: - Creating new algorithms through automated systems
+- Potential of program synthesis for automated code generation
+
+Slide 6
+Title: Adaptation
+Content: - Software's ability to evolve post-deployment
+- Optimizing for new hardware configurations autonomously
+
+Slide 7
+Title: Interplay Between the Pillars
+Content: - Influence of advancements in one pillar on the others
+- Better capturing of intent leading to effective algorithm creation and adaptation
+
+Slide 8
+Title: Conclusion
+Content: - Integration of machine learning and programming for automation
+- Making software development more efficient and accessible
+- Envisioning a future with automated coding processes for all
+
+Slide 9
+Title: Impact of Data
+Content: - Data as a fundamental component for machine programming success
+- Need for high-quality, diverse datasets for training algorithms

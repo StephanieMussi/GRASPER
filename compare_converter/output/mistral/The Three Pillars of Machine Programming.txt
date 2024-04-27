@@ -1,0 +1,55 @@
+ Slide 1
+Title: Introduction to Machine Programming
+Content:
+- Shifting software development burden from humans to automated systems
+- Enhancing efficiency, correctness, and security of software
+- Need for machine programming due to computational power and complexity
+- Potential of machine learning to revolutionize programming
+
+Slide 2
+Title: Why Machine Programming Now?
+Content:
+- Technological advancements: natural language processing, data availability, cloud computing
+- Assisting users in writing and maintaining programs
+
+Slide 3
+Title: The Three Pillars of Machine Programming
+Content:
+1. Intention: Capturing user goals through improved interfaces
+2. Invention: Creating/refining algorithms and hardware-software interactions
+3. Adaptation: Autonomously optimizing software and fixing issues
+
+Slide 4
+Title: Pillar 1 - Intention: Understanding User Intent
+Content:
+- Challenges in accurately capturing user intent
+- Leveraging machine learning for natural language interpretation
+
+Slide 5
+Title: Pillar 2 - Invention: Creating/Refining Algorithms
+Content:
+- Automated system creation and improvement of existing algorithms
+- Potential of program synthesis: generating programs to meet specified behavior
+
+Slide 6
+Title: Pillar 3 - Adaptation: Software Evolution
+Content:
+- Optimizing software for new hardware configurations
+- Correcting errors through updates without human intervention
+
+Slide 7
+Title: Interplay Between the Pillars
+Content:
+- Improvements in one pillar influencing others (e.g., better intent leading to effective invention and adaptation)
+
+Slide 8
+Title: Conclusion: The Future of Machine Programming
+Content:
+- Integration of machine learning and programming automating software development
+- Enabling more people to utilize advanced computing capabilities without specialized training
+
+Slide 9
+Title: Role of Data in Machine Programming
+Content:
+- High-quality, diverse datasets essential for machine programming systems' success
+- Training algorithms to drive these systems

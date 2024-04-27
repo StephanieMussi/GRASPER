@@ -1,0 +1,54 @@
+ Slide 1
+Title: Introduction and Background
+Content:
+- Overview of the challenge of increasing computational resources in CNN training
+- Problem statement: Decreased model accuracy with larger batch sizes
+- Current solutions: Adjusting learning rate (LR) and its limitations
+
+Slide 2
+Title: Challenges of Large Batch Training
+Content:
+- Impact on Model Accuracy: Fewer iterations for weight updates, requiring larger LR steps
+- Optimization Difficulties: Complicates optimization and can lead to divergence
+- Case studies: Resnet-50 and Alexnet
+
+Slide 3
+Title: Proposed Solutions and New Developments
+Content:
+- Batch Normalization (BN): Improves model convergence for large learning rates and accuracy
+- Layer-wise Adaptive Rate Scaling (LARS): A novel training algorithm that adjusts the LR for each layer
+
+Slide 4
+Title: Mechanism of LARS Algorithm
+Content:
+- Separate LR for each layer, not just each weight
+- Controls update magnitude in relation to weight norm
+
+Slide 5
+Title: Benefits of LARS Algorithm
+Content:
+- Better stability
+- Capacity to train networks like Alexnet and Resnet-50 at large batch sizes (up to 32K) without accuracy loss
+
+Slide 6
+Title: Performance Comparison of LARS vs. Traditional Methods
+Content:
+- Significantly outperforms traditional methods in training stability and effectiveness, especially noticeable in higher batch sizes
+
+Slide 7
+Title: Experimental Results and Findings
+Content:
+- Alexnet-BN Training: Improved accuracy with LARS compared to standard Alexnet
+- Resnet-50 Scaling: Successfully scaled up to a batch size of 32K with minimal accuracy loss
+- Generalization and Stability: Conclusion that accuracy loss is primarily due to optimization issues rather than lack of generalization capability
+
+Slide 8
+Title: Conclusion and Implications
+Content:
+- LARS represents a significant advancement in training CNNs with large batches
+- Future research directions: Exploring techniques for training networks with batch sizes above 32K
+
+Slide 9
+Title: References
+Content:
+- Comprehensive list of prior studies and contributions in the field.

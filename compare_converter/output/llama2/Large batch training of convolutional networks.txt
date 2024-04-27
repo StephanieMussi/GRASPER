@@ -1,0 +1,42 @@
+  Sure! Here are the slides based on the provided text:
+Slide 1: Introduction and Background
+Title: Overview of Large Batch Training in CNNs
+Content:
+* Acceleration of CNN training relies on increasing computational resources, specifically data-parallel SGD with mini-batches divided among multiple units.
+* Larger batch sizes often result in decreased model accuracy, a challenge documented in numerous studies.
+
+Slide 2: The Challenges of Large Batch Training
+Title: Impact on Model Accuracy and Optimization Difficulties
+Content:
+* Studies indicate that training with large batches tends to reduce model accuracy due to fewer iterations for weight updates, which necessitates larger steps in the learning rate.
+* Using a larger LR can lead to optimization difficulties, especially during initial training phases.
+
+Slide 3: Proposed Solutions and New Developments
+Title: Batch Normalization and Layer-wise Adaptive Rate Scaling (LARS)
+Content:
+* Batch normalization replaces Local Response Normalization layers in AlexNet to improve model convergence for large learning rates and accuracy.
+* LARS adjusts the LR for each layer individually based on the norm of layer weights and gradient updates, offering a more stable and controlled training progression.
+
+Slide 4: Analysis of LARS Algorithm
+Title: Mechanism and Benefits of LARS
+Content:
+* LARS uses separate LRs for each layer, not just each weight, controlling the update magnitude in relation to weight norm for more stable and controlled training progression.
+* Main advantages include better stability and capacity to train networks like Alexnet and Resnet-50 at very large batch sizes without accuracy loss.
+
+Slide 5: Experimental Results and Findings
+Title: Alexnet and Resnet-50 Training with LARS
+Content:
+* Alexnet-BN showed improved accuracy across various large batch sizes compared to standard Alexnet, especially notable at 8K and 16K batch sizes.
+* Resnet-50 was successfully scaled up to a batch size of 32K with minimal accuracy loss using LARS.
+
+Slide 6: Conclusion and Implications
+Title: Summary of Contributions and Future Research Directions
+Content:
+* LARS represents a significant advancement in the training of CNNs with large batches, addressing many of the key challenges associated with traditional methods.
+* Future research directions include exploring the generalization gap and potential improvements in large batch training techniques.
+
+Slide 7: References
+Title: Comprehensive References
+Content:
+
+* Includes comprehensive references to prior studies and contributions in the field, underscoring the ongoing dialogue and research efforts surrounding efficient and effective training methodologies for CNNs.

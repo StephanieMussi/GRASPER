@@ -1,41 +1,53 @@
 Slide 1
 Title: Introduction
-Content: - Importance of large datasets and complex models in deep learning
-- Challenge of extended training times in improving accuracy
-- Application areas requiring rapid training of large datasets
+Content: 
+- Importance of large datasets and complex models in deep learning
+- Challenge of extended training times in DNNs
+- Applications in computational finance and autonomous driving
 
 Slide 2
 Title: Scaling DNN Training
-Content: - Advancements in synchronous SGD methods for ImageNet training
-- Scaling batch size from 1K on 128 processors to 32K
-- Maintaining accuracy over fixed epochs
+Content: 
+- Advancements in scaling DNN training for ImageNet-1k
+- Focus on synchronous SGD methods
+- Batch size scaling from 1K on 128 processors to 32K
 
 Slide 3
 Title: LARS Algorithm and Its Impact
-Content: - Introduction of Layer-wise Adaptive Rate Scaling algorithm
-- Enabling larger batch sizes and increased processor utilization
-- Achieving training times of 11 minutes for AlexNet and 20 minutes for ResNet-50 on supercomputers
+Content: 
+- Introduction of Layer-wise Adaptive Rate Scaling algorithm
+- Enables larger batch sizes and increased processor utilization
+- Achieved training times of 11 minutes for AlexNet and 20 minutes for ResNet-50
 
 Slide 4
 Title: Comparative Performance Analysis
-Content: - Comparison of training speeds and accuracies with LARS algorithm
-- Reducing ResNet-50 training time to 14 minutes with top-1 test accuracy of 74.9%
-- Surpassing previous benchmarks
+Content: 
+- Comparison of training speeds and accuracies with LARS algorithm vs. other methods
+- Reduction of ResNet-50 training time to 14 minutes with 74.9% top-1 test accuracy
 
 Slide 5
 Title: Data Augmentation and Batch Size Efficiency
-Content: - Role of data augmentation in maintaining high accuracy
+Content: 
+- Role of data augmentation in maintaining high accuracy levels
 - Impact of large batch sizes on training dynamics
-- Efficiency gains in reducing communication overhead
+- Larger batches reducing communication overhead and improving efficiency
 
 Slide 6
 Title: Challenges and Opportunities
-Content: - Ongoing challenges in further scaling DNN training
+Content: 
+- Ongoing challenges in scaling DNN training further
 - Need for advanced data augmentation techniques
 - Managing trade-offs between batch size, accuracy, and training time
 
 Slide 7
 Title: Conclusion
-Content: - Reaffirming ImageNet's importance as a benchmark
-- Summary of advances in reducing training times through scaling and algorithmic improvements
+Content: 
+- Reaffirmation of ImageNet-1k importance in benchmarking DNN training
+- Summary of advances in reducing training times through scaling and algorithms
 - Potential impact on applications requiring rapid processing of large datasets
+
+Slide 8
+Title: Acknowledgements and References
+Content: 
+- Acknowledgments to contributors and supporting institutions
+- Comprehensive list of references documenting advancements in DNN training

@@ -1,0 +1,46 @@
+Slide 1
+Title: Introduction and Background
+Content: 
+- Overview of CNNs training acceleration methods
+- Problem statement of reduced model accuracy with larger batch sizes
+- Mention of adjusting LR and limitations of linear scaling approach
+
+Slide 2
+Title: The Challenges of Large Batch Training
+Content: 
+- Impact on model accuracy and fewer weight update iterations
+- Difficulties in optimization with larger LR causing divergence
+- Case studies (Resnet-50, Alexnet) showcasing accuracy impacts
+
+Slide 3
+Title: Proposed Solutions and New Developments
+Content: 
+- Use of Batch Normalization in place of Local Response Normalization
+- Introduction of Layer-wise Adaptive Rate Scaling (LARS) algorithm
+- Improved model convergence and stability for large learning rates 
+
+Slide 4
+Title: Analysis of LARS Algorithm
+Content: 
+- Mechanism of separate LR for each layer
+- Benefits of better stability and high batch size accuracy retention
+- Performance comparison with traditional methods in training stability
+
+Slide 5
+Title: Experimental Results and Findings
+Content: 
+- Improved accuracy in Alexnet-BN with LARS at various batch sizes
+- Successful Resnet-50 scaling up to 32K batches with minimal accuracy loss
+- Exploration of generalization gap being optimization-related with LARS
+
+Slide 6
+Title: Conclusion and Implications
+Content: 
+- Summary of significant advancements with LARS in large batch training
+- Potential directions for future research on higher batch sizes
+- Implications for efficient and effective CNN training methodologies
+
+Slide 7
+Title: References
+Content: 
+- Inclusion of comprehensive references to prior research in the field

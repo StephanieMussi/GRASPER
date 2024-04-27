@@ -1,0 +1,52 @@
+Slide 1
+Title: Introduction
+Content: - Challenges in fine-grained category discovery
+         - Need for models to make sense of unlabeled data
+         - Leveraging labeled data for understanding new categories
+
+Slide 2
+Title: Problem Definition
+Content: - Generalized category discovery in fine-grained datasets
+         - Learning subtle category distinctions with limited labeled data
+         - Distinguished from semi-supervised learning by lack of comprehensive labels
+
+Slide 3
+Title: Proposed Method - XCon
+Content: - Data Partitioning: Divide dataset into expert sub-datasets
+         - Expert-Contrastive Learning: Enhance model with contrastive learning
+         - Leveraging k-means clustering on self-supervised features
+
+Slide 4
+Title: Key Contributions
+Content: - Innovative Learning Strategy with expert knowledge
+         - Performance Enhancement in category discovery
+         - Methodology Validation with state-of-the-art benchmarks
+
+Slide 5
+Title: Experimental Setup
+Content: - Validation experiments on CUB-200, Stanford Cars datasets
+         - Evaluation metrics: clustering accuracy
+         - Comparison with existing methods
+
+Slide 6
+Title: Results and Discussion
+Content: - Significant improvements in clustering accuracy with XCon
+         - Implications for fine-grained category discovery
+         - Potential of expert knowledge in ML models
+
+Slide 7
+Title: Future Work
+Content: - Exploring diverse datasets for further research
+         - Integrating additional self-supervision methods
+         - Refining expert-contrastive learning for complex categories
+
+Slide 8
+Title: Conclusion
+Content: - Effectiveness of XCon in addressing fine-grained category discovery
+         - Benefits in scalability, accuracy, and efficiency
+         - Leveraging unlabeled data for category discovery
+
+Slide 9
+Title: Acknowledgements
+Content: - Appreciation for computing resources support
+         - Collaboration acknowledgements for facilitating research
