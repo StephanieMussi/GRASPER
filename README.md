@@ -1,6 +1,5 @@
 # PDF PPT Generator
-## Demo 
-Link to demo video on YouTube:
+
 ## How to run
 ### Method 1: Run with docker (recommended)
 #### 1. Pull the docker image
