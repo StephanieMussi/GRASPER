@@ -14,6 +14,8 @@ from pptx import Presentation
 from tkinter import filedialog
 from transformers import BartTokenizer, BartForConditionalGeneration
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import LlamaForCausalLM, LlamaTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 """
 Validate the arguments specified by user. 
@@ -143,7 +145,7 @@ def summarize_text_T5(long_text, max_text_length=3996):
 """
 Summarize text with LlaMa2 model
 """
-def summarize_chunks_llama2(token_chunks, max_sum_length, min_sum_length):
+def summarize_chunks_llama2(token_chunks, max_sum_length, min_sum_length, tokenizer):
     summaries = []
     for chunk in token_chunks:
         chunk_text = tokenizer.convert_tokens_to_string(chunk)
@@ -167,9 +169,10 @@ def summarize_chunks_llama2(token_chunks, max_sum_length, min_sum_length):
     return summaries
 
 def summarize_text_llama2(long_text):
+    tokenizer_llama2 = LlamaTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
     text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_llama2, 3996)
     max_sum_length, min_sum_length = get_max_min_sum_length(num_chunk)
-    chunk_summaries_llama2 = summarize_chunks_llama2(text_chunks, max_sum_length, min_sum_length)
+    chunk_summaries_llama2 = summarize_chunks_llama2(text_chunks, max_sum_length, min_sum_length, tokenizer_llama2)
     final_summary_llama2 = concatenate_summaries(chunk_summaries_llama2)
     return final_summary_llama2
 
@@ -177,7 +180,7 @@ def summarize_text_llama2(long_text):
 """
 Summarize text with Mistral model
 """
-def summarize_chunks_mistral(token_chunks, max_sum_length, min_sum_length):
+def summarize_chunks_mistral(token_chunks, max_sum_length, min_sum_length, tokenizer):
     summaries = []
     for chunk in token_chunks:
         chunk_text = tokenizer.convert_tokens_to_string(chunk)
@@ -201,9 +204,10 @@ def summarize_chunks_mistral(token_chunks, max_sum_length, min_sum_length):
     return summaries
 
 def summarize_text_mistral(long_text):
+    tokenizer_mistral = AutoTokenizer.from_pretrained("mistralai/Mistral-7B-v0.1")
     text_chunks, num_chunk = chunk_text_into_tokens(long_text, tokenizer_mistral, 3996)
     max_sum_length, min_sum_length = get_max_min_sum_length(num_chunk)
-    chunk_summaries_mistral = summarize_chunks_mistral(text_chunks, max_sum_length, min_sum_length)
+    chunk_summaries_mistral = summarize_chunks_mistral(text_chunks, max_sum_length, min_sum_length, tokenizer_mistral)
     final_summary_mistral = concatenate_summaries(chunk_summaries_mistral)
     return final_summary_mistral
 
