@@ -1,5 +1,7 @@
 # GRASPER: Generating Academic Slides From Papers
 
+Here is link to a short demo of this generator: https://youtu.be/Q0k95FIjuIA
+
 ## How to run
 ### Method 1: Run with docker (recommended)
 #### 1. Pull the docker image
