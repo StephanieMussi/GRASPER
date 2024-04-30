@@ -1,4 +1,4 @@
-# PDF PPT Generator
+# GRASPER: Generating Academic Slides From Papers
 
 ## How to run
 ### Method 1: Run with docker (recommended)
